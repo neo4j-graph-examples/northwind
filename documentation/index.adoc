@@ -1,5 +1,3 @@
-
-
 = Northwind Graph
 
 == Northwind Graph
@@ -10,10 +8,10 @@ The _Northwind Graph_ demonstrates how to migrate from a relational database to 
 
 This guide will show you how to:
 
-*Load: create data from external CSV files
-*Index: index nodes based on label
-*Relate: transform foreign key references into data relationships
-*Promote: transform join records into relationships
+* Load: create data from external CSV files
+* Index: index nodes based on label
+* Relate: transform foreign key references into data relationships
+* Promote: transform join records into relationships
 
 ---
 
@@ -21,7 +19,7 @@ This guide will show you how to:
 
 Northwind sells food products in a few categories, provided by suppliers. Let's start by loading the product catalog tables.
 
-The load statements to the right require public internet access.         <code>LOAD CSV</code> will retrieve a CSV file from a valid URL,         applying a Cypher statement to each row using a named map (here we're         using the name `row`).
+The load statements to the right require public internet access. `LOAD CSV` will retrieve a CSV file from a valid URL, applying a Cypher statement to each row using a named map (here we're using the name `row`).
 
 image::img/product-category-supplier.png[]
 
@@ -87,7 +85,7 @@ WHERE p.categoryID = c.categoryID
 CREATE (p)-[:PART_OF]->(c)
 ====
 
-<warn>Note you only need to compare property values like this when first creating relationships</warn>
+WARNING: Note you only need to compare property values like this when first creating relationships
 
         <figcaption>
           Calculate join, materialize relationship. (See{' '}
@@ -108,7 +106,7 @@ WHERE p.supplierID = s.supplierID
 CREATE (s)-[:SUPPLIES]->(p)
 ====
 
-<warn>Note you only need to compare property values like this when first creating relationships</warn>
+WARNING: Note you only need to compare property values like this when first creating relationships
 
 ---
 
@@ -122,15 +120,15 @@ pass:[help <a help-topic="cypher">cypher</a> <a help-topic="match">MATCH</a>]
 
 === Query using patterns
 
+List the product categories provided by each supplier:
+
 [source,cypher]
 ====
 MATCH (s:Supplier)-->(:Product)-->(c:Category)
 RETURN s.companyName as Company, collect(distinct c.categoryName) as Categories
 ====
 
-        <figcaption>
-          List the product categories provided by each supplier.
-        </figcaption>
+Find the produce suppliers:
 
 [source,cypher]
 ====
@@ -138,8 +136,7 @@ MATCH (c:Category {categoryName:"Produce"})<--(:Product)<--(s:Supplier)
 RETURN DISTINCT s.companyName as ProduceSuppliers
 ====
 
-        <figcaption>Find the produce suppliers.</figcaption>
-		
+	
 ---
 
 == Customer Orders
@@ -185,10 +182,7 @@ WHERE c.customerID = o.customerID
 CREATE (c)-[:PURCHASED]->(o)
 ====
 
- <aside className="warn">
-          Note you only need to compare property values like this when first
-          creating relationships
-        </aside>
+WARNING: Note you only need to compare property values like this when first creating relationships
 
 ---
 
@@ -214,10 +208,7 @@ SET details = row,
 details.quantity = toInteger(row.quantity)
 ====
 
-        <aside className="warn">
-          Note you only need to compare property values like this when first
-          creating relationships
-        </aside>
+WARNING: Note you only need to compare property values like this when first creating relationships
 
 === Query using patterns
 
@@ -236,11 +227,11 @@ RETURN DISTINCT cust.contactName as CustomerName, SUM(o.quantity) AS TotalProduc
 
 == More code
 
-* <a play-topic="movie-graph">Movie Graph</a> - actors & movies
-* <a play-topic="cypher">Cypher</a> - query language fundamentals
+* :pass[<a play-topic="movie-graph">Movie Graph</a> - actors & movies]
+* :pass[<a play-topic="cypher">Cypher</a> - query language fundamentals]
 
 == References
 
-* <a target="_blank" href="https://neo4j.com/developer/guide-importing-data-and-etl/">Full Northwind import example</a>
-* <a target="_blank" href="https://neo4j.com/developer/">Developer resources</a>
-* <ManualLink chapter="cypher-manual" page="/">Neo4j Cypher Manual</ManualLink>
+* https://neo4j.com/developer/guide-importing-data-and-etl/[Full Northwind import example^]
+* https://neo4j.com/developer/[Developer resources^]
+* https://neo4j.com/docs/cypher-manual[Neo4j Cypher Manual^]
