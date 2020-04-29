@@ -1,0 +1,32 @@
+:name: northwind-graph
+:long_name: Northwind Graph
+:description: From RDBMS to Graph, using a classic dataset
+:icon: 
+:logo: 
+:tags:
+:author: 
+:use-load-script: 
+:use-dump-file: 
+:use-plugin: 
+:target-db-version: 
+:bloom-perspective: 
+:guide: 
+:rendered-guide: https://guides.neo4j.com/sandbox/bloom/index.html
+:model:
+:model-guide:
+:todo: 
+image::{logo}[]
+
+= {long_name} Graph Example
+
+Description: {description}
+
+TODO: {todo}
+
+=== Setup
+
+This is for version: {target-db-version}
+
+unrendered guide: {guide}
+
+rendered guide available from: {rendered-guide}
