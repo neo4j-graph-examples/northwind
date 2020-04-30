@@ -217,8 +217,8 @@ WARNING: Note you only need to compare property values like this when first crea
 
 == More code
 
-* :pass[<a play-topic="movie-graph">Movie Graph</a> - actors & movies]
-* :pass[<a play-topic="cypher">Cypher</a> - query language fundamentals]
+* pass:a[<a play-topic="movie-graph">Movie Graph</a> - actors & movies]
+* pass:a[<a play-topic="cypher">Cypher</a> - query language fundamentals]
 
 == References
 
