@@ -176,7 +176,7 @@ WARNING: Note you only need to compare property values like this when first crea
 
 ---
 
-==Customer Order Graph
+== Customer Order Graph
 
 Notice that Order Details are always part of an Order and that they{' '} _relate_ the Order to a Product — they're a join table. Join tables are always a sign of a data relationship, indicating shared information between two other records.
 
