@@ -1,32 +1,53 @@
-:name: northwind-graph
-:long_name: Northwind Graph
-:description: From RDBMS to Graph, using a classic dataset
+:name: northwind
+:long_name: Northwind
+:description: From RDBMS to Graph, using a classic retail dataset
 :icon: 
 :logo: 
 :tags:
 :author: 
-:use-load-script: 
+:use-load-script: scripts/import.cypher
+:data: import/*.csv
 :use-dump-file: 
 :use-plugin: 
-:target-db-version: 
+:target-db-version: 3.5,4.0
 :bloom-perspective: 
-:guide: 
-:rendered-guide: https://guides.neo4j.com/sandbox/bloom/index.html
-:model:
+:guide: documentation/guide.adoc
+:rendered-guide: https://guides.neo4j.com/northwind/index.html
+:model: documentation/img/model.svg
+:example: documentation/img/example.svg
+:example-query: MATCH (p:Product)-[:PART_OF]->(:Category)-[:PARENT*0..]-> +
+(:Category {categoryName:"Dairy Products"}) +
+RETURN p.productName
+
 :model-guide:
 :todo: 
 image::{logo}[]
 
 = {long_name} Graph Example
 
-Description: {description}
+Description: _{description}_
 
-TODO: {todo}
+.Model
+image::{model}[]
+
+.Example
+image::{example}[width=600]
+
+.Example Query:
+[source,cypher,subs=attributes]
+----
+{example-query}
+----
 
 === Setup
 
-This is for version: {target-db-version}
+This is for Neo4j version: `{target-db-version}`
 
-unrendered guide: {guide}
+Rendered guide available from: `:play northwind graph` 
+// or `:play {rendered-guide}``
 
-rendered guide available from: {rendered-guide}
+Import Script: `cypher-shell -a <address> -u neo4j -p <password> -f {use-load-script}`
+
+Unrendered guide: link:{guide}[]
+
+Data files: `{data}`
