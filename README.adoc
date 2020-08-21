@@ -17,8 +17,8 @@
 :example: documentation/img/example.svg
 
 :query: MATCH (p:Product)-[:PART_OF]->(:Category)-[:PARENT*0..]-> +
-(:Category {categoryName:}) +
-RETURN p.productName as product +
+ (:Category {categoryName:$category}) +
+ RETURN p.productName as product +
 
 :param-name: category
 :param-value: Dairy Products
@@ -61,3 +61,11 @@ Import Script: `cypher-shell -a <address> -u neo4j -p <password> -f {use-load-sc
 Unrendered guide: link:{guide}[]
 
 Data files: `{data}`
+
+=== Code Examples
+
+* link:code/javascript/example.js[JavaScript]
+* link:code/java/Example.java[Java]
+* link:code/csharp/Example.cs[C#]
+* link:code/python/example.py[Python]
+* link:code/go/example.go[Go]
