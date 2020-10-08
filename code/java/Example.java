@@ -11,26 +11,26 @@ public class Example {
 
   public static void main(String...args) {
 
-    Driver driver = GraphDatabase.driver("bolt://<HOST>:<BOLTPORT>",
-              AuthTokens.basic("<USERNAME>","<PASSWORD>"));
+    try (Driver driver = GraphDatabase.driver("bolt://<HOST>:<BOLTPORT>",
+              AuthTokens.basic("<USERNAME>","<PASSWORD>"))) {
 
-    try (Session session = driver.session(SessionConfig.forDatabase("neo4j"))) {
+      try (Session session = driver.session(SessionConfig.forDatabase("neo4j"))) {
 
-      String cypherQuery =
-        "MATCH (p:Product)-[:PART_OF]->(:Category)-[:PARENT*0..]-> " +
-        "(:Category {categoryName:$category}) " +
-        "RETURN p.productName as product " ;
+        String cypherQuery =
+          "MATCH (p:Product)-[:PART_OF]->(:Category)-[:PARENT*0..]-> " +
+          "(:Category {categoryName:$category}) " +
+          "RETURN p.productName as product " ;
 
-      var result = session.readTransaction(
-        tx -> tx.run(cypherQuery, 
-                parameters("category","Dairy Products"))
-            .list());
+        var result = session.readTransaction(
+          tx -> tx.run(cypherQuery,
+                  parameters("category","Dairy Products"))
+              .list());
 
-      for (Record record : result) {
-        System.out.println(record.get("product").asString());
+        for (Record record : result) {
+          System.out.println(record.get("product").asString());
+        }
       }
     }
-    driver.close();
   }
 }
 
