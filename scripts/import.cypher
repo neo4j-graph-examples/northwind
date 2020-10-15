@@ -1,51 +1,45 @@
-﻿LOAD CSV WITH HEADERS FROM "http://data.neo4j.com/northwind/products.csv" AS row
-CREATE (n:Product)
-SET n = row,
+﻿CREATE CONSTRAINT ON (p:Product) ASSERT p.productID IS UNIQUE;
+CREATE CONSTRAINT ON (c:Category) ASSERT c.categoryID IS UNIQUE;
+CREATE CONSTRAINT ON (s:Supplier) ASSERT s.supplierID IS UNIQUE;
+
+LOAD CSV WITH HEADERS FROM "http://data.neo4j.com/northwind/products.csv" AS row
+MERGE (n:Product {productID:row.productID})
+SET n += row,
 n.unitPrice = toFloat(row.unitPrice),
 n.unitsInStock = toInteger(row.unitsInStock), n.unitsOnOrder = toInteger(row.unitsOnOrder),
 n.reorderLevel = toInteger(row.reorderLevel), n.discontinued = (row.discontinued <> "0");
 
 LOAD CSV WITH HEADERS FROM "http://data.neo4j.com/northwind/categories.csv" AS row
-CREATE (n:Category)
-SET n = row;
+MERGE (n:Category {categoryID:row.categoryID})
+SET n += row;
 
 LOAD CSV WITH HEADERS FROM "http://data.neo4j.com/northwind/suppliers.csv" AS row
-CREATE (n:Supplier)
-SET n = row;
-
-CREATE INDEX ON :Supplier(supplierID);
-
-CREATE INDEX ON :Category(categoryID);
-
-CREATE INDEX ON :Product(productID);
+MERGE (n:Supplier {supplierID:row.supplierID})
+SET n += row;
 
 MATCH (p:Product),(c:Category)
 WHERE p.categoryID = c.categoryID
-CREATE (p)-[:PART_OF]->(c);
+MERGE (p)-[:PART_OF]->(c);
 
 MATCH (p:Product),(s:Supplier)
 WHERE p.supplierID = s.supplierID
-CREATE (s)-[:SUPPLIES]->(p);
+MERGE (s)-[:SUPPLIES]->(p);
 
 LOAD CSV WITH HEADERS FROM "http://data.neo4j.com/northwind/customers.csv" AS row
-CREATE (n:Customer)
-SET n = row;
+MERGE (n:Customer {customerID:row.customerID})
+SET n += row;
 
 LOAD CSV WITH HEADERS FROM "http://data.neo4j.com/northwind/orders.csv" AS row
-CREATE (n:Order)
-SET n = row;
-
-CREATE INDEX ON :Order(orderID);
-
-CREATE INDEX ON :Customer(customerID);
+MERGE (n:Order {orderID:row.orderID})
+SET n += row;
 
 MATCH (c:Customer),(o:Order)
 WHERE c.customerID = o.customerID
-CREATE (c)-[:PURCHASED]->(o);
+MERGE (c)-[:PURCHASED]->(o);
 
 LOAD CSV WITH HEADERS FROM "http://data.neo4j.com/northwind/order-details.csv" AS row
 MATCH (p:Product), (o:Order)
 WHERE p.productID = row.productID AND o.orderID = row.orderID
-CREATE (o)-[details:ORDERS]->(p)
+MERGE (o)-[details:ORDERS]->(p)
 SET details = row,
 details.quantity = toInteger(row.quantity);
