@@ -23,7 +23,7 @@
 :param-name: category
 :param-value: Dairy Products
 :result-column: product
-:expected-result: Cheese
+:expected-result: Geitost
 
 :model-guide:
 :todo: 
