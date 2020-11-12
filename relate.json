@@ -1,6 +1,8 @@
 {
     "name": "northwind",
     "description":"From RDBMS to Graph, using a classic retail dataset",
-    "useLoadScript":"scripts/import.cypher",
-    "targetNeo4jVersion":"> 3.5 < 4.2"
+    "install": [{
+      "scriptFile":"scripts/import.cypher",
+      "targetNeo4jVersion":"> 3.5 < 4.2"
+    }]
 }
