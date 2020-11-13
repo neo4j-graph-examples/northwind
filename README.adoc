@@ -11,7 +11,7 @@
 :use-plugin: 
 :target-db-version: 3.5,4.0
 :bloom-perspective: bloom/northwind.bloom-perspective
-:guide: documentation/guide.adoc
+:guide: documentation/northwind.neo4j-browser-guide
 :rendered-guide: https://guides.neo4j.com/northwind/index.html
 :model: documentation/img/model.svg
 :example: documentation/img/example.svg
