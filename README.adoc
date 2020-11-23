@@ -1,11 +1,11 @@
 :name: northwind
-:long_name: Northwind
+:long-name: Northwind
 :description: From RDBMS to Graph, using a classic retail dataset
 :icon: 
 :logo: documentation/img/northwind-logo.jpg
 :tags: retail,recommendations,northwind
 :author: Andreas Kollegger
-:use-load-script: scripts/import.cypher
+:use-load-script: scripts/northwind.cypher
 :data: import/*.csv
 :use-dump-file: data/northwind-40.dump
 :use-plugin: 
@@ -29,7 +29,7 @@
 :todo: 
 image::{logo}[width=100]
 
-= {long_name} Graph Example
+== {long-name} Graph Example
 
 Description: _{description}_
 
