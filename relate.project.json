@@ -1,7 +1,6 @@
 {
     "name": "northwind",
     "description":"From RDBMS to Graph, using a classic retail dataset",
-    "scriptFile":"scripts/northwind.cypher",
     "dbms": [
       {
           "dumpFile": "data/northwind-35.dump",
@@ -9,6 +8,7 @@
       },
       {
           "dumpFile": "data/northwind-40.dump",
+          "scriptFile":"scripts/northwind.cypher",
           "targetNeo4jVersion": "^4.0"
       }
   ]
