@@ -70,13 +70,13 @@ Unrendered guide: link:{guide}[]
 Load graph data via the following:
 
 ifeval::[{data} != false]
-Data files: `{data}`
+==== Data files: `{data}`
 
 Import flat files (csv, json, etc) using Cypher's https://neo4j.com/docs/cypher-manual/current/clauses/load-csv/[`LOAD CSV`], https://neo4j.com/labs/apoc/[APOC library], or https://neo4j.com/developer/data-import/[other methods].
 endif::[]
 
 ifeval::[{use-dump-file} != false]
-Dump file: `{use-dump-file}`
+==== Dump file: `{use-dump-file}`
 
 * Drop the file into the `Files` section of a project in Neo4j Desktop. Then choose the option to `Create new DBMS from dump` option from the file options.
 
@@ -91,7 +91,7 @@ bin/neo4j-admin load --from {use-dump-file} [--database "database"]
 endif::[]
 
 ifeval::[{use-load-script} != false]
-Data load script: `{use-load-script}`
+==== Data load script: `{use-load-script}`
 
 [source,shell,subs=attributes]
 ----
@@ -102,6 +102,8 @@ Or import in Neo4j Browser by dragging or pasting the content of {use-load-scrip
 endif::[]
 
 ifeval::[{zip-file} != false]
+==== Zipe file
+
 Download the zip file link:{repo}/raw/master/{name}.zip[{name}.zip] and add it as "project from file" to https://neo4j.com/developer/neo4j-desktop[Neo4j Desktop^].
 endif::[]
 
