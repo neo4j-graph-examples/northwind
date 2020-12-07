@@ -6,7 +6,7 @@ import (
 	"github.com/neo4j/neo4j-go-driver/neo4j" //Go 1.8
 )
 func main() {
-	s, err := runQuery("bolt://demo.neo4jlabs.com:7687", "<USERNAME>", "<PASSWORD>")
+	s, err := runQuery("bolt://<HOST>:<BOLTPORT>", "<USERNAME>", "<PASSWORD>")
 	if err != nil {
 		panic(err)
 	}
@@ -28,16 +28,16 @@ func runQuery(uri, username, password string) ([]string, error) {
 	results, err := session.ReadTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
 		result, err := transaction.Run(
 			`
-			MATCH (p:Product)-[:PART_OF]->(:Category)-[:PARENT*0..]-> 
-			(:Category {categoryName:$category}) 
-			RETURN p.productName as product 
+			MATCH (p:Product)-[:PART_OF]->(:Category)-[:PARENT*0..]->
+			(:Category {categoryName:$category})
+			RETURN p.productName as product
 			`, map[string]interface{}{
 				"category": "Dairy Products",
 			})
 		if err != nil {
 			return nil, err
 		}
-		arr := make([]string, 0)
+		var arr []string
 		for result.Next() {
 			value, found := result.Record().Get("product")
 			if found {

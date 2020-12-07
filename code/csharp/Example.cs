@@ -18,9 +18,9 @@ namespace dotnet {
 
     var cypherQuery =
       @"
-      MATCH (p:Product)-[:PART_OF]->(:Category)-[:PARENT*0..]-> 
-      (:Category {categoryName:$category}) 
-      RETURN p.productName as product 
+      MATCH (p:Product)-[:PART_OF]->(:Category)-[:PARENT*0..]->
+      (:Category {categoryName:$category})
+      RETURN p.productName as product
       ";
 
     var session = driver.AsyncSession(o => o.WithDatabase("neo4j"));
