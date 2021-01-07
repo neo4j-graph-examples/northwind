@@ -17,8 +17,8 @@ public class Example {
     try (Session session = driver.session(SessionConfig.forDatabase("neo4j"))) {
 
       String cypherQuery =
-        "MATCH (p:Product)-[:PART_OF]->(:Category)-[:PARENT*0..]->" +
-        "(:Category {categoryName:$category})" +
+        "MATCH (p:Product)-[:PART_OF]->(:Category)-[:PARENT*0..]-> " +
+        "(:Category {categoryName:$category}) " +
         "RETURN p.productName as product";
 
       var result = session.readTransaction(
