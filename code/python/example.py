@@ -8,8 +8,8 @@ driver = GraphDatabase.driver(
   auth=basic_auth("<USERNAME>", "<PASSWORD>"))
 
 cypher_query = '''
-MATCH (p:Product)-[:PART_OF]->(:Category)-[:PARENT*0..]->
-(:Category {categoryName:$category})
+MATCH (p:Product)-[:PART_OF]->(:Category)-[:PARENT*0..]-> 
+(:Category {categoryName:$category}) 
 RETURN p.productName as product
 '''
 
