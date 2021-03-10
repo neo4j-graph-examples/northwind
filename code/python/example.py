@@ -8,9 +8,9 @@ driver = GraphDatabase.driver(
   auth=basic_auth("<USERNAME>", "<PASSWORD>"))
 
 cypher_query = '''
-MATCH (p:Product)-[:PART_OF]->(:Category)-[:PARENT*0..]-> 
-(:Category {categoryName:$category}) 
-RETURN p.productName as product
+MATCH (p:Product)-[:PART_OF]->(:Category)-[:PARENT*0..]->
+(:Category {categoryName:$category})
+ RETURN p.productName as product
 '''
 
 with driver.session(database="neo4j") as session:

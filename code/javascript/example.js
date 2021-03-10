@@ -7,9 +7,9 @@ const driver = neo4j.driver('bolt://<HOST>:<BOLTPORT>',
 
 const query =
   `
-  MATCH (p:Product)-[:PART_OF]->(:Category)-[:PARENT*0..]-> 
-  (:Category {categoryName:$category}) 
-  RETURN p.productName as product
+  MATCH (p:Product)-[:PART_OF]->(:Category)-[:PARENT*0..]->
+  (:Category {categoryName:$category})
+   RETURN p.productName as product
   `;
 
 const params = {"category": "Dairy Products"};
