@@ -30,9 +30,9 @@ func runQuery(uri, database, username, password string) (result []string, err er
 	results, err := session.ReadTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
 		result, err := transaction.Run(
 			`
-			MATCH (p:Product)-[:PART_OF]->(:Category)-[:PARENT*0..]-> 
-			(:Category {categoryName:$category}) 
-			RETURN p.productName as product
+			MATCH (p:Product)-[:PART_OF]->(:Category)-[:PARENT*0..]->
+			(:Category {categoryName:$category})
+			 RETURN p.productName as product
 			`, map[string]interface{}{
 				"category": "Dairy Products",
 			})
