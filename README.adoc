@@ -17,15 +17,6 @@
 :model: documentation/img/model.svg
 :example: documentation/img/example.svg
 
-:query: MATCH (p:Product)-[:PART_OF]->(:Category)-[:PARENT*0..]-> +
- (:Category {categoryName:$category}) +
- RETURN p.productName as product +
-
-:param-name: category
-:param-value: Dairy Products
-:result-column: product
-:expected-result: Geitost
-
 :todo: false
 image::{icon}[width=100]
 
@@ -44,9 +35,11 @@ image::{model}[]
 image::{example}[width=600]
 
 .Example Query:
-[source,cypher,subs=attributes]
+[source,cypher,role=query-example,param-name=category,param-value="Dairy Products",result-column=product,expected-result=Geitost]
 ----
-{query}
+MATCH (p:Product)-[:PART_OF]->(:Category)-[:PARENT*0..]->
+(:Category {categoryName:$category})
+ RETURN p.productName as product
 ----
 
 === Setup
