@@ -8,6 +8,13 @@
       },
       {
           "dumpFile": "data/northwind-40.dump",
+          "targetNeo4jVersion": "4.0.* - 4.2.*"
+      },
+      {
+          "dumpFile": "data/northwind-43.dump",
+          "targetNeo4jVersion": "^4.3"
+      },
+      {
           "scriptFile":"scripts/northwind.cypher",
           "targetNeo4jVersion": "^4.0"
       }
