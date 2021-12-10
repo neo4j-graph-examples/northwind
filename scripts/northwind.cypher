@@ -1,6 +1,6 @@
-CREATE CONSTRAINT ON (p:Product) ASSERT p.productID IS UNIQUE;
-CREATE CONSTRAINT ON (c:Category) ASSERT c.categoryID IS UNIQUE;
-CREATE CONSTRAINT ON (s:Supplier) ASSERT s.supplierID IS UNIQUE;
+CREATE CONSTRAINT IF NOT EXISTS ON (p:Product) ASSERT p.productID IS UNIQUE;
+CREATE CONSTRAINT IF NOT EXISTS ON (c:Category) ASSERT c.categoryID IS UNIQUE;
+CREATE CONSTRAINT IF NOT EXISTS ON (s:Supplier) ASSERT s.supplierID IS UNIQUE;
 
 LOAD CSV WITH HEADERS FROM "http://data.neo4j.com/northwind/products.csv" AS row
 MERGE (n:Product {productID:row.productID})
