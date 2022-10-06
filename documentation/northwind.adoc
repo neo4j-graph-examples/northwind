@@ -75,7 +75,7 @@ The products, categories and suppliers are related through foreign key
 references. Let's promote those to data relationships to realize the
 graph.
 
-image:https://assets.neo4j.com/wp-content/uploads/20160211151108/product-graph.png[image]
+image:https://dev.assets.neo4j.com/wp-content/uploads/20160211151108/product-graph.png[image]
 
 === Create data relationships
 
@@ -108,7 +108,7 @@ creating relationships
 
 Lets try some queries using patterns.
 
-image:https://assets.neo4j.com/wp-content/uploads/20160211151108/product-graph.png[image]
+image:https://dev.assets.neo4j.com/wp-content/uploads/20160211151108/product-graph.png[image]
 
 === Query using patterns
 
@@ -137,7 +137,7 @@ Find the produce suppliers.
 Northwind customers place orders which may detail multiple
 products. 
 
-image::https://assets.neo4j.com/wp-content/uploads/20160211151108/customer-orders.png[]
+image::https://dev.assets.neo4j.com/wp-content/uploads/20160211151108/customer-orders.png[]
 
 === Load and index records
 
@@ -185,7 +185,7 @@ tables are always a sign of a data relationship, indicating shared
 information between two other records.
 
 Here, we'll directly promote each OrderDetail record into a relationship
-in the graph. image:https://assets.neo4j.com/wp-content/uploads/20160211151107/order-graph.png[]
+in the graph. image:https://dev.assets.neo4j.com/wp-content/uploads/20160211151107/order-graph.png[]
 
 
 === Load and index records
