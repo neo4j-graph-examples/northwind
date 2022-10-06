@@ -75,7 +75,7 @@ The products, categories and suppliers are related through foreign key
 references. Let's promote those to data relationships to realize the
 graph.
 
-image:https://dev.assets.neo4j.com/wp-content/uploads/20160211151108/product-graph.png[image]
+image:https://assets.neo4j.com/wp-content/uploads/20160211151108/product-graph.png[image]
 
 === Create data relationships
 
