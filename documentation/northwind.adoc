@@ -28,7 +28,7 @@ access.`LOAD CSV` will retrieve a CSV file from a valid URL, applying a
 Cypher statement to each row using a named map (here we're using the
 name `row`).
 
-image:https://dev.assets.neo4j.com.s3.amazonaws.com/wp-content/uploads/20160211151109/product-category-supplier.png[image]
+image:https://dev.assets.neo4j.com/wp-content/uploads/20160211151109/product-category-supplier.png[image]
 
 == Load records
 
