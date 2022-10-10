@@ -17,8 +17,7 @@ The guide uses the classic (relational) Northwind dataset.
 3.  Explore the loaded data visually
 4.  Query patterns in your data
 
-== Step 1: What is a graph?
-
+== What is a graph?
 
 A graph database stores entities (nodes) and their relationships instead of tables, or documents. 
 Data is stored just like you might sketch ideas on a whiteboard. 
@@ -34,7 +33,7 @@ Queries that follow relationships are then simple and fast.
 
 This can have exciting and powerful implications for what you can do with your data.
 
-== Step 2: Nodes, properties, relationships
+== Nodes, properties, relationships
 
 A graph is made up of nodes, and relationships each with type(s) and properties.
 
@@ -85,7 +84,7 @@ Notice the relationships connecting the nodes: a `Customer PURCHASED an Order` a
 
 image::https://neo4j-graph-examples.github.io/northwind/documentation/img/model.svg[]
 
-== Step 4: Finish the Northwind import
+== Finish the Northwind import
 
 For each node and relationship in the model you can see which parts of the CSV file is mapped to which properties.
 
@@ -105,7 +104,7 @@ Now let's explore our data visually, after the import finished, click the *Explo
 
 TODO button switch to explore
 
-== Step 5: Explore your graphs
+== Explore your graphs
 
 Now that your data is in the graph, let's get familiar with the retail data in a graph shape in the *Explore* tab.
 
@@ -128,7 +127,7 @@ You can select all `Categories` by clicking on their box in the right side legen
 
 That context menu also offers many more options like editing, partial expansion, clearing the scene or dismissing (un-)selected. nodes.
 
-== Step 6: Advanced exploration
+== Advanced exploration
 
 Above the zoomed out view, you can switch between layouts.
 
@@ -144,7 +143,7 @@ Learn more in the https://neo4j.com/docs/bloom-user-guide/current/bloom-visual-t
 
 TODO switch to Query
 
-== Step 7: Basic Querying
+== Basic Querying
 
 On the left sidebar in the first entry (database) you can see the counts of types of nodes and relationships.
 Click on `(Product)` - the database will fetch a few  elements with that label with a minimal query.
@@ -166,7 +165,7 @@ That view shows by default if you return only scalar values.
 // TBD Alternatively we could have them click on [:SUPPLIES] and then they would already see a graph visualization, it would use graph patterns and pattern variable, but it might be too complex. I would actually prefer this one.
 // See screenhots below.
 
-== Step 8: Writing your first query
+== Writing your first query
 
 Like any other database Neo4j can be queried with a query language. 
 As SQL joins get really convoluted for graphs, our graph query language called *Cypher* is much better suited for finding patterns.
