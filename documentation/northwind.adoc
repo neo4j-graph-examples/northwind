@@ -1,210 +1,212 @@
-= Northwind Graph
-:neo4j-version: 2.3.0
+= Learn about graphs, how to load data, explore and query.
 
-:toc:
+== What you will learn
 
-== From RDBMS to Graph, using a classic dataset
+This guide will teach you about the power of graph databases. 
 
-The__Northwind Graph__ demonstrates how to migrate from a relational
-database to Neo4j. The transformation is iterative and deliberate,
-emphasizing the conceptual shift from relational tables to the nodes and
-relationships of a graph.
+It will take around 10 minutes and by the end of it you will:
 
-This guide will show you how to:
+Know what the graph property model is and what problems it can help you solve.
+Learn how to convert an understanding of a relational database model to a graph.
+Get familiar with Neo4j's tools to import, visualize, and query data in a graph.
 
-1.  Load: create data from external CSV files
-2.  Index: index nodes based on label
-3.  Relate: transform foreign key references into data relationships
-4.  Promote: transform join records into relationships
+The guide uses the classic (relational) Northwind dataset.
+
+1.  Model: What is a graph model and its elements
+2.  Load a graph from external CSV files
+3.  Explore the loaded data visually
+4.  Query patterns in your data
+
+== Step 1: What is a graph?
 
 
-== Product Catalog
+A graph database stores entities (nodes) and their relationships instead of tables, or documents. 
+Data is stored just like you might sketch ideas on a whiteboard. 
+Your data is managed without restricting it to a pre-defined schema, allowing a very flexible way of thinking and evolving it.
 
-Northwind sells food products in a few categories, provided by
-suppliers. Let's start by loading the product catalog tables.
+image::https://github.com/neo4j-graph-examples/northwind/raw/main/documentation/img/model.svg[]
 
-The load statements to the right require public internet
-access.`LOAD CSV` will retrieve a CSV file from a valid URL, applying a
-Cypher statement to each row using a named map (here we're using the
-name `row`).
+In relational databases, references to other rows and tables computed at query time through the use of joins.
+These can be complex, slow, and expensive.
 
-image:https://dev.assets.neo4j.com/wp-content/uploads/20160211151109/product-category-supplier.png[image]
+In the graph property model, those relationships are stored in the database. 
+Queries that follow relationships are then simple and fast.
 
-== Load records
+This can have exciting and powerful implications for what you can do with your data.
 
-.Load products
+== Step 2: Nodes, properties, relationships
+
+A graph is made up of nodes, and relationships each with type(s) and properties.
+
+=== Nodes and Properties
+
+
+Nodes can be tagged with _Labels_, representing their different roles in your domain. (`Supplier`, `Employee`, `Customer`). 
+They can hold any number of key-value pairs as _Properties_. (`name:"Jane"`).
+
+=== Relationships
+
+_Relationships_ provide directed, typed, attributed connections between two node entities (e.g. `Shipper SHIPS Order`).
+
+Relationships always have a _direction_, a _type_, a start node, and an end node, and they can hold properties, just like nodes.
+
+Nodes can have any number of relationships without sacrificing performance. 
+Although relationships are always directed, they can be navigated efficiently in any direction.
+
+In our example, you could find who shipped an order; you could also reverse that and find what orders were
+shipped.
+
+
+== Step3: Re-imagining a classic (Northwind)
+
+// await signals.emit(SIGNAL_NAME.WorkspaceNavigate, { scope: APP_SCOPE.import });
+
+image::https://neo4j-graph-examples.github.io/northwind/documentation/img/product-category-supplier.png[]
+
+The classic Northwind dataset represents an online shop. 
+Here we're going transform this relational database example into a graph database.
+
+image::https://neo4j-graph-examples.github.io/northwind/documentation/img/product-graph.png[]
+
+
+////
+.TODO diagram of Northwind customer, order, and product
+image::https://github.com/neo4j-graph-examples/northwind/blob/main/documentation/img/example.svg[]
+////
+
+Click the button to download a zip file with the CSVs and an initial graph model.
+
+TODO:  Button Download the Northwind dataset
+
+Drag the zip file into the left file sidebar of the Import tab.
+
+You can now see the CSV files from Northwind's tables represented as a graph model. 
+Notice the relationships connecting the nodes: a `Customer PURCHASED an Order` and the `Order CONTAINED Products`.
+
+image::https://neo4j-graph-examples.github.io/northwind/documentation/img/model.svg[]
+
+== Step 4: Finish the Northwind import
+
+For each node and relationship in the model you can see which parts of the CSV file is mapped to which properties.
+
+And to connect Nodes with Relationships we use source and target ids from the original join tables or foreign keys.
+
+Explore the model a bit by clicking around.
+
+You can see a preview of the imported data if you'd like by clicking the *Preview Graph* button that allows you to check node labels, the property names and values and relationship types and directions.
+
+And if you're satisfied, click the *Run Import* button to load your data into your graph.
+
+Don't worry if something goes wrong, the tool can import the same data multiple times and you can reset your database to blank in the AuraDB UI.
+
+// A/B Test: TBD we could leave off one simple mapping, e.g. shipper and let the user do it (or prepare the node without mapping the rel and properties (but pick one that lends itself well to auto-mapping) in an area of the model that is non-crucial for later steps but not sure if that would have too many folks fail here
+
+Now let's explore our data visually, after the import finished, click the *Explore the Import Results* button in the report popup, or switch to the *Explore* tab.
+
+TODO button switch to explore
+
+== Step 5: Explore your graphs
+
+Now that your data is in the graph, let's get familiar with the retail data in a graph shape in the *Explore* tab.
+
+The "Show me a graph" search phrase should have been run and shows an example subset of the data.
+
+You can also run it yourself in the top-left search bar.
+
+There you can use simple search phrases based on your node labels and relationship types to visualize your graph.
+
+Try to enter `Category<tab>` and then press return, it should fetch and display all categories. 
+Which you now can explore and expand.
+
+TODO captions!!
+
+One neat feature is to select two nodes (`Shift-Click`) and select *Paths -> Shortest Path* from the right-click context menu on one of them.
+
+TBD educate about paths in search box!
+
+You can select all `Categories` by clicking on their box in the right side legend and then choose *Expand -> All* in the context menu to see all the products contained in these categories.
+
+That context menu also offers many more options like editing, partial expansion, clearing the scene or dismissing (un-)selected. nodes.
+
+== Step 6: Advanced exploration
+
+Above the zoomed out view, you can switch between layouts.
+
+You can style your data in the right legend using colors, icons, sizes, captions and even apply rules for these.
+Try to click on `Category` in the Legend and pick a different color, icon and size for your nodes.
+
+Selected nodes and relationships are highlighted and counted in the legend and shown in the card view in the lower left corner. 
+There you can explore your data structurally.
+
+*Explore* also offers options to filter your on-screen nodes with a advanced filter menu, and even rudimentary end user programming by storing *Cypher Phrases* to be available later.
+
+Learn more in the https://neo4j.com/docs/bloom-user-guide/current/bloom-visual-tour/[documentation^] and videos.
+
+TODO switch to Query
+
+== Step 7: Basic Querying
+
+On the left sidebar in the first entry (database) you can see the counts of types of nodes and relationships.
+Click on `(Product)` - the database will fetch a few  elements with that label with a minimal query.
+
+.Load query for product nodes
 [source,cypher]
 ----
-LOAD CSV WITH HEADERS FROM "https://data.neo4j.com/northwind/products.csv" AS row
-CREATE (n:Product)
-SET n = row,
-  n.unitPrice = toFloat(row.unitPrice),
-  n.unitsInStock = toInt(row.unitsInStock), n.unitsOnOrder = toInt(row.unitsOnOrder),
-  n.reorderLevel = toInt(row.reorderLevel), n.discontinued = (row.discontinued <> "0")
+MATCH (n:Product) 
+RETURN n 
+LIMIT 25
 ----
 
-.Load categories
+In the *graph view* the result nodes are visualized and you can double-click them to see their neighbors. 
+In the right properties side-panel you can inspect more properties and also style the nodes (size, color, caption) if you click on the `(Product)` label on top.
+
+You can also switch to the *table view* to see your results in a tabular fashion, nodes and relationships are visualized in a JSON structure.
+That view shows by default if you return only scalar values.
+
+// TBD Alternatively we could have them click on [:SUPPLIES] and then they would already see a graph visualization, it would use graph patterns and pattern variable, but it might be too complex. I would actually prefer this one.
+// See screenhots below.
+
+== Step 8: Writing your first query
+
+Like any other database Neo4j can be queried with a query language. 
+As SQL joins get really convoluted for graphs, our graph query language called *Cypher* is much better suited for finding patterns.
+
+In Cypher you represent the graph patterns that you've seen in Import and Explore with ascii-art. 
+
+Parentheses `(p:Product {name:'Camembert Pierrot'})` forming "circles" around nodes and arrows `+-[:SUPPLIES]->+` depicting relationships. 
+You draw in text what you would draw on the whiteboard.
+
+These patterns are used to find, create and update graph data.
+
+You've already seen the `MATCH (n:Product) RETURN n LIMIT 25` statement that was run for you.
+
+Click on the statement to edit it and change the pattern to: `(n:Product)<-[r:SUPPLIES]-(s:Supplier)` and the result to `RETURN n,r,s LIMIT 25` and click on the run icon icon:PlayIcon[].
+
+Congratulations, you've written and run your first Cypher query.
+
+.Show products and their suppliers
 [source,cypher]
 ----
-LOAD CSV WITH HEADERS FROM "https://data.neo4j.com/northwind/categories.csv" AS row
-CREATE (n:Category)
-SET n = row
+MATCH (n:Product)<-[r:SUPPLIES]-(s) 
+RETURN n,r,s 
+LIMIT 25
 ----
 
-.Load suppliers
+To learn more about Cypher check out the interactive https://graphacademy.neo4j.com/categories/beginners/[GraphAcademy course^] and have a look at the https://neo4j.com/docs/cypher-cheat-sheet/current/[Cypher Cheat Sheet^].
+
+A more complex query would find all products ordered by a customer and who supplies those.
+
+.All products ordered by a customer and who supplies those
 [source,cypher]
 ----
-LOAD CSV WITH HEADERS FROM "https://data.neo4j.com/northwind/suppliers.csv" AS row
-CREATE (n:Supplier)
-SET n = row
+MATCH path=(c:Customer)-[:PURCHASED]->()-[:ORDERS]->(:Product)<-[:SUPPLIES]-(:Supplier)
+WHERE c.companyName = 'Blauer See Delikatessen'
+RETURN path;
 ----
 
-== Create indexes
+image::https://neo4j-graph-examples.github.io/northwind/documentation/img/example.svg[]
 
-.Create indexes for the loaded nodes
-[source,cypher]
-----
-CREATE INDEX ON :Product(productID);
-CREATE INDEX ON :Category(categoryID);
-CREATE INDEX ON :Supplier(supplierID);
-----
-
-== Product Catalog Graph
-
-The products, categories and suppliers are related through foreign key
-references. Let's promote those to data relationships to realize the
-graph.
-
-image:https://dev.assets.neo4j.com/wp-content/uploads/20160211151108/product-graph.png[image]
-
-=== Create data relationships
-
-.Connect products to categories
-[source,cypher]
-----
-MATCH (p:Product),(c:Category)
-WHERE p.categoryID = c.categoryID
-CREATE (p)-[:PART_OF]->(c)
-----
-
-Note you only need to compare property values like this when first
-creating relationships
-
-Calculate join, materialize relationship.
-(See https://neo4j.com/developer/guide-importing-data-and-etl[importing guide] for more details)
-
-.Connect products to suppliers
-[source,cypher]
-----
-MATCH (p:Product),(s:Supplier)
-WHERE p.supplierID = s.supplierID
-CREATE (s)-[:SUPPLIES]->(p)
-----
-
-Note you only need to compare property values like this when first
-creating relationships
-
-== Querying Product Catalog Graph
-
-Lets try some queries using patterns.
-
-image:https://dev.assets.neo4j.com/wp-content/uploads/20160211151108/product-graph.png[image]
-
-=== Query using patterns
-
-
-
-.List the product categories provided by each supplier
-[source,cypher]
-----
-MATCH (s:Supplier)-->(:Product)-->(c:Category)
-RETURN s.companyName as Company, collect(distinct c.categoryName) as Categories
-----
-//table
-
-.List suppliers for the "Produce" category
-[source,cypher]
-----
-MATCH (c:Category {categoryName:"Produce"})<--(:Product)<--(s:Supplier)
-RETURN DISTINCT s.companyName as ProduceSuppliers
-----
-//table
-
-Find the produce suppliers.
-
-== Customer Orders
-
-Northwind customers place orders which may detail multiple
-products. 
-
-image::https://dev.assets.neo4j.com/wp-content/uploads/20160211151108/customer-orders.png[]
-
-=== Load and index records
-
-.Load customers
-[source,cypher]
-----
-LOAD CSV WITH HEADERS FROM "https://data.neo4j.com/northwind/customers.csv" AS row
-CREATE (n:Customer)
-SET n = row
-----
-
-.Load orders
-[source,cypher]
-----
-LOAD CSV WITH HEADERS FROM "https://data.neo4j.com/northwind/orders.csv" AS row
-CREATE (n:Order)
-SET n = row
-----
-
-.Create indexes for loaded nodes
-[source,cypher]
-----
-CREATE INDEX ON :Customer(customerID);
-CREATE INDEX ON :Order(orderID);
-----
-
-== Create data relationships
-
-.Connect customers to their orders
-[source,cypher]
-----
-MATCH (c:Customer),(o:Order)
-WHERE c.customerID = o.customerID
-CREATE (c)-[:PURCHASED]->(o)
-----
-
-Note you only need to compare property values like this when first
-creating relationships
-
-== Customer Order Graph
-
-Notice that Order Details are always part of an Order and that
-they__relate__ the Order to a Product — they're a join table. Join
-tables are always a sign of a data relationship, indicating shared
-information between two other records.
-
-Here, we'll directly promote each OrderDetail record into a relationship
-in the graph. image:https://dev.assets.neo4j.com/wp-content/uploads/20160211151107/order-graph.png[]
-
-
-=== Load and index records
-
-.Load order details and use them to connect orders to products
-[source,cypher]
-----
-LOAD CSV WITH HEADERS FROM "https://data.neo4j.com/northwind/order-details.csv" AS row
-MATCH (p:Product), (o:Order)
-WHERE p.productID = row.productID AND o.orderID = row.orderID
-CREATE (o)-[details:ORDERS]->(p)
-SET details = row,
-  details.quantity = toInt(row.quantity)
-----
-
-Note you only need to compare property values like this when first
-creating relationships
-
-== Query using patterns
+Or how many products in the "Produce" category each customer ordered.
 
 .Find total quantity per customer in the "Produce" category
 [source,cypher]
@@ -213,11 +215,5 @@ MATCH (cust:Customer)-[:PURCHASED]->(:Order)-[o:ORDERS]->(p:Product),
       (p)-[:PART_OF]->(c:Category {categoryName:"Produce"})
 RETURN DISTINCT cust.contactName as CustomerName, SUM(o.quantity) AS TotalProductsPurchased
 ----
-//table
 
-_More Resources_
-
-* https://neo4j.com/developer/guide-importing-data-and-etl/[Full
-Northwind import example]
-* https://neo4j.com/developer[Developer resources]
-
+As you get more familiar with Cypher, you can use the https://neo4j.com/docs/drivers-apis/[Neo4j drivers^] for JavaScript, Python, Java, C# and Go to build your applications, or use our GraphQL or Spring Data Neo4j integrations for building APIs.
