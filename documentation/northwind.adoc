@@ -1,37 +1,34 @@
-= Learn about graphs, how to load data, explore and query.
+= Learn graph fundamentals with Neo4j
 
 == What you will learn
 
-This guide will teach you about the power of graph databases. 
+This guide will teach you about the power of graph databases. We recommend it as the starting place for all new users as it will touch upon the concepts and tools you need to work with graphs. 
 
 It will take around 10 minutes and by the end of it you will:
 
-Know what the graph property model is and what problems it can help you solve.
-Learn how to convert an understanding of a relational database model to a graph.
-Get familiar with Neo4j's tools to import, visualize, and query data in a graph.
+- Know what the _graph property model_ is and what problems it can help you solve.
+- Learn how to convert an understanding of a _relational database model_ to a graph.
+- Import and model data from CSV files and map them to a graph.
+- Visually explore that data, without code, in a graph. 
+- Write your first simple graph queries using Cypher.
 
-The guide uses the classic (relational) Northwind dataset.
+We will be using the classic relational dataset known as Northwind. 
 
-1.  Model: What is a graph model and its elements
-2.  Load a graph from external CSV files
-3.  Explore the loaded data visually
-4.  Query patterns in your data
+Let's get started! It's time to bring this dataset and fictional company into an exciting graph-enabled future.
 
 == What is a graph?
 
-A graph database stores entities (nodes) and their relationships instead of tables, or documents. 
-Data is stored just like you might sketch ideas on a whiteboard. 
-Your data is managed without restricting it to a pre-defined schema, allowing a very flexible way of thinking and evolving it.
+A graph database stores entities (we call them _nodes_) and their _relationships_ instead of tables, or documents. Data is stored just like you might sketch ideas on a whiteboard.
 
 image::https://github.com/neo4j-graph-examples/northwind/raw/main/documentation/img/model.svg[]
 
-In relational databases, references to other rows and tables computed at query time through the use of joins.
-These can be complex, slow, and expensive.
+Nodes are things like Northwind's your customers and products. The graph store node relationships; for example, a customer may _purchase_ a product. 
 
-In the graph property model, those relationships are stored in the database. 
-Queries that follow relationships are then simple and fast.
+In relational databases, those relationships between rows and other tables are not stored. Instead, in a relational database a user must sometimes write queries that use joins. These operations can be complex, slow, and expensive. 
 
-This can have exciting and powerful implications for what you can do with your data.
+In a graph, you get them insantly and for free. This has powerful implications for many data-driven applications. 
+
+Your data is managed without restricting it to a pre-defined schema, allowing a very flexible way of thinking and evolving it.
 
 == Nodes, properties, relationships
 
