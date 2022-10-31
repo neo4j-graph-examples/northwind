@@ -1,8 +1,10 @@
 = Learn graph fundamentals with Neo4j
 
-== What you will learn
+== Let's get started
 
 This guide will teach you about the power of graph databases. We recommend it as the starting place for all new users as it will touch upon the concepts and tools you need to work with graphs. 
+
+=== What you will learn
 
 It will take around 10 minutes and by the end of it you will:
 
