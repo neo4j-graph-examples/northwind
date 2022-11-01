@@ -273,7 +273,7 @@ To learn more about Cypher check out the interactive https://graphacademy.neo4j.
 
 As you get more familiar with Cypher, you can use the https://neo4j.com/docs/drivers-apis/[Neo4j drivers^] for JavaScript, Python, Java, C# and Go to build your applications, or use our GraphQL or Spring Data Neo4j integrations for building APIs.
 
-=== Become a graph master with GraphAcademy
+=== Go further with GraphAcademy
 
 GraphAcademy is provided by Neo4j and offers in-depth courses on many aspects of graph databases. 
 Check out the https://graphacademy.neo4j.com/[GraphAcademy website^].
