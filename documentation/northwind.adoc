@@ -3,7 +3,8 @@
 
 == Let's get started
 
-This guide will teach you about the power of graph databases. We recommend it as the starting place for all new users as it will touch upon the concepts and tools you need to work with graphs. 
+This guide will teach you about the power of graph databases. 
+We recommend it as the starting place for all new users as it will touch upon the concepts and tools you need to work with graphs. 
 
 === What you will learn
 
@@ -17,7 +18,8 @@ This guide will take around 10 minutes and by the end of it you will:
 
 === Let's get started! 
 
-We will be using the classic relational dataset known as Northwind. It's time to bring this dataset and fictional company into an exciting graph-enabled future.
+We will be using the classic relational dataset known as Northwind. 
+It's time to bring this dataset and fictional company into an exciting graph-enabled future.
 
 
 == What is a graph?
@@ -30,7 +32,8 @@ Unlike other types of database, which may use tables or documents, in a graph da
 
 image::https://github.com/neo4j-graph-examples/northwind/raw/main/documentation/img/model.svg[]
 
-In relational databases, the relationships between rows and other tables are not stored. Instead, you must write queries that use a `join`. These operations can be complex, slow, and expensive. 
+In relational databases, the relationships between rows and other tables are not stored. 
+Instead, you must write queries that use a `join`. These operations can be complex, slow, and expensive. 
 
 In a graph, you get them insantly and for free. This has powerful implications for many data-driven applications. 
 
@@ -45,7 +48,7 @@ The nodes and relationships in your graph can have *Types* and *Properties*.
 
 === Nodes and Properties
 
-Nodes can be tagged with *Labels*, representing their different roles in your dataset (e.g. `Supplier`, `Employee`, `Customer`). 
+Nodes can be tagged with *Labels*, representing their different roles in your dataset (e.g. `Supplier`, `Employee`, `Customer`).
 They can also hold any number of key-value pairs as *Properties*. (`name:"Jane"`).
 
 === Relationships
@@ -68,7 +71,8 @@ shipped.
 
 image::https://neo4j-graph-examples.github.io/northwind/documentation/img/product-category-supplier.png[]
 
-The classic Northwind dataset represents an online shop. We're going transform this relational database example into a graph database. 
+The classic Northwind dataset represents an online shop. 
+We're going transform this relational database example into a graph database. 
 
 image::https://neo4j-graph-examples.github.io/northwind/documentation/img/product-graph.png[]
 
@@ -85,7 +89,8 @@ TODO:  Button Download the Northwind dataset
 
 If the Import tab, drag the zip file into the the import sidebar on the left.
 
-You can now see the CSV files from Northwind's tables represented as a graph model. We have prepared the mappings for these files for you. 
+You can now see the CSV files from Northwind's tables represented as a graph model. 
+We have prepared the mappings for these files for you. 
 
 Notice the relationships connecting the nodes: a `Customer PURCHASED an Order` and the `Order CONTAINED Products`.
 
@@ -131,7 +136,8 @@ You can also run it yourself by typing the phrase in the top-left search bar.
 
 You can use simple search phrases based on your node labels and relationship types to visualize your graph.
 
-Try to enter `Category<tab>` and then press return; it should fetch and display all categories. You can now explore and expand the graph visualization. 
+Try to enter `Category<tab>` and then press return; it should fetch and display all categories. 
+You can now explore and expand the graph visualization. 
 
 This is a great way to discover interesting relationships and formulate questions about your data. 
 
@@ -151,7 +157,7 @@ Above the zoomed out view, you can switch between layouts.
 
 You can style your data in the right legend using colors, icons, sizes, captions and even apply rules for these.
 
-- Click on `Category` in the Legend and pick a different color, icon, and size for your nodes.
+Click on `Category` in the Legend and pick a different color, icon, and size for your nodes.
 
 Selected nodes and relationships are highlighted and counted in the legend and shown in the card view in the lower left corner. 
 There you can explore your data structurally.
@@ -166,7 +172,8 @@ Learn more in the https://neo4j.com/docs/bloom-user-guide/current/bloom-visual-t
 
 If you haven't already, switch to the Query tab. 
 
-On the left sidebar in the first entry (database) you can see the counts of types of nodes and relationships. Click on `(Product)` - the database will fetch a few  elements with that label with a minimal query.
+On the left sidebar in the first entry (database) you can see the counts of types of nodes and relationships. 
+Click on `(Product)` - the database will fetch a few  elements with that label with a minimal query.
 
 .Load query for product nodes
 [source,cypher]
@@ -191,7 +198,8 @@ That view shows by default if you return only scalar values.
 
 Like any other database Neo4j can be queried with a query language. 
 
-Our graph query language called *Cypher* and is much better suited for finding patterns. Compared to SQL there is no reliance on writing complex joins. 
+Our graph query language called *Cypher* and is much better suited for finding patterns. 
+Compared to SQL there is no reliance on writing complex joins. 
 
 In Cypher you represent the graph patterns that you've seen in Import and Explore with ascii-art. 
 
