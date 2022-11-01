@@ -1,126 +1,145 @@
 = Learn graph fundamentals with Neo4j
 
+
 == Let's get started
 
 This guide will teach you about the power of graph databases. We recommend it as the starting place for all new users as it will touch upon the concepts and tools you need to work with graphs. 
 
 === What you will learn
 
-It will take around 10 minutes and by the end of it you will:
+This guide will take around 10 minutes and by the end of it you will:
 
-- Know what the _graph property model_ is and what problems it can help you solve.
-- Learn how to convert an understanding of a _relational database model_ to a graph.
+- Understand the *graph property model* and what problems it can help you solve.
+- Learn how to convert an understanding of a relational database model to a graph.
 - Import and model data from CSV files and map them to a graph.
 - Visually explore that data, without code, in a graph. 
-- Write your first simple graph queries using Cypher.
+- Write your first simple graph queries using *Cypher*.
 
-We will be using the classic relational dataset known as Northwind. 
+=== Let's get started! 
 
-Let's get started! It's time to bring this dataset and fictional company into an exciting graph-enabled future.
+We will be using the classic relational dataset known as Northwind. It's time to bring this dataset and fictional company into an exciting graph-enabled future.
+
 
 == What is a graph?
 
-A graph database stores entities (we call them _nodes_) and their _relationships_ instead of tables, or documents. Data is stored just like you might sketch ideas on a whiteboard.
+=== Concepts
+
+A graph database stores *nodes* (`Customer`, `Product`, etc) and their *relationships* (e.g. `Customer PURCHASED Product`). 
+
+Unlike other types of database, which may use tables or documents, in a graph data is stored just like you might sketch ideas on a whiteboard.
 
 image::https://github.com/neo4j-graph-examples/northwind/raw/main/documentation/img/model.svg[]
 
-Nodes are things like Northwind's your customers and products. The graph store node relationships; for example, a customer may _purchase_ a product. 
-
-In relational databases, those relationships between rows and other tables are not stored. Instead, in a relational database a user must sometimes write queries that use joins. These operations can be complex, slow, and expensive. 
+In relational databases, the relationships between rows and other tables are not stored. Instead, you must write queries that use a `join`. These operations can be complex, slow, and expensive. 
 
 In a graph, you get them insantly and for free. This has powerful implications for many data-driven applications. 
 
-Your data is managed without restricting it to a pre-defined schema, allowing a very flexible way of thinking and evolving it.
+=== Schema free
+
+In a relational database, you must define your schema (the structure of the data). In a graph, your data is managed without restricting it to a pre-defined schema. This allows a very flexible way of thinking and evolving it.
+
 
 == Nodes, properties, relationships
 
-A graph is made up of nodes, and relationships each with type(s) and properties.
+The nodes and relationships in your graph can have *Types* and *Properties*. 
 
 === Nodes and Properties
 
-
-Nodes can be tagged with _Labels_, representing their different roles in your domain. (`Supplier`, `Employee`, `Customer`). 
-They can hold any number of key-value pairs as _Properties_. (`name:"Jane"`).
+Nodes can be tagged with *Labels*, representing their different roles in your dataset (e.g. `Supplier`, `Employee`, `Customer`). 
+They can also hold any number of key-value pairs as *Properties*. (`name:"Jane"`).
 
 === Relationships
 
-_Relationships_ provide directed, typed, attributed connections between two node entities (e.g. `Shipper SHIPS Order`).
+*Relationships* provide directed, typed, or attributed, connections between two node entities (e.g. `Shipper SHIPS Order`).
 
-Relationships always have a _direction_, a _type_, a start node, and an end node, and they can hold properties, just like nodes.
+Relationships always have a *direction*, a *type*, a start node, and an end node. They can also hold properties, just like nodes.
 
 Nodes can have any number of relationships without sacrificing performance. 
+
 Although relationships are always directed, they can be navigated efficiently in any direction.
 
 In our example, you could find who shipped an order; you could also reverse that and find what orders were
 shipped.
 
 
-== Step3: Re-imagining a classic (Northwind)
+== Re-imagining a classic (Northwind)
 
 // await signals.emit(SIGNAL_NAME.WorkspaceNavigate, { scope: APP_SCOPE.import });
 
 image::https://neo4j-graph-examples.github.io/northwind/documentation/img/product-category-supplier.png[]
 
-The classic Northwind dataset represents an online shop. 
-Here we're going transform this relational database example into a graph database.
+The classic Northwind dataset represents an online shop. You're going transform this relational database example into a graph database. 
 
 image::https://neo4j-graph-examples.github.io/northwind/documentation/img/product-graph.png[]
-
 
 ////
 .TODO diagram of Northwind customer, order, and product
 image::https://github.com/neo4j-graph-examples/northwind/blob/main/documentation/img/example.svg[]
 ////
 
-Click the button to download a zip file with the CSVs and an initial graph model.
+Click the button to download a zip file with the CSVs and an initial graph model we have prepared for you.
 
+////
 TODO:  Button Download the Northwind dataset
+////
 
-Drag the zip file into the left file sidebar of the Import tab.
+Drag the zip file into the left file sidebar of the import tab on the left.
 
 You can now see the CSV files from Northwind's tables represented as a graph model. 
+
 Notice the relationships connecting the nodes: a `Customer PURCHASED an Order` and the `Order CONTAINED Products`.
 
 image::https://neo4j-graph-examples.github.io/northwind/documentation/img/model.svg[]
 
 == Finish the Northwind import
 
-For each node and relationship in the model you can see which parts of the CSV file is mapped to which properties.
+For each node and relationship in the model you can see which parts of the CSV file are mapped to which properties.
 
-And to connect Nodes with Relationships we use source and target ids from the original join tables or foreign keys.
+To connect Nodes with Relationships we use source and target ids from the original join tables or foreign keys.
 
-Explore the model a bit by clicking around.
+The model is interactive; you click around and explore its Nodes and Relationships. 
 
-You can see a preview of the imported data if you'd like by clicking the *Preview Graph* button that allows you to check node labels, the property names and values and relationship types and directions.
+=== Preview your data import
 
-And if you're satisfied, click the *Run Import* button to load your data into your graph.
+You can see a preview of the data import by clicking the *Preview Graph* button that allows you to check node labels, the property names and values, and relationship types and directions.
 
-Don't worry if something goes wrong, the tool can import the same data multiple times and you can reset your database to blank in the AuraDB UI.
+If you're satisfied, click the *Run Import* button to load your data into your graph.
+
+Don't worry if something goes wrong, the tool can import the same data multiple times and you can reset your database to blank in the AuraDB Console.
 
 // A/B Test: TBD we could leave off one simple mapping, e.g. shipper and let the user do it (or prepare the node without mapping the rel and properties (but pick one that lends itself well to auto-mapping) in an area of the model that is non-crucial for later steps but not sure if that would have too many folks fail here
 
-Now let's explore our data visually, after the import finished, click the *Explore the Import Results* button in the report popup, or switch to the *Explore* tab.
+=== Explore your data
 
-TODO button switch to explore
+After you have imported the Northwind dataset, click the *Explore the Import Results* button in the report popup or switch to the *Explore* tab. 
+
+It's time see the power of graph visualization.
+
+// TODO button switch to explore
 
 == Explore your graphs
 
-Now that your data is in the graph, let's get familiar with the retail data in a graph shape in the *Explore* tab.
+Now that your data is in the graph, let's get familiar with in the *Explore* tab.
 
-The "Show me a graph" search phrase should have been run and shows an example subset of the data.
+The `Show me a graph` search phrase should have been run automatically to show an example subset of the data.
 
 You can also run it yourself in the top-left search bar.
 
-There you can use simple search phrases based on your node labels and relationship types to visualize your graph.
+=== Searching for data in Explore
 
-Try to enter `Category<tab>` and then press return, it should fetch and display all categories. 
-Which you now can explore and expand.
+You can use simple search phrases based on your node labels and relationship types to visualize your graph.
 
-TODO captions!!
+Try to enter `Category<tab>` and then press return; it should fetch and display all categories. 
+
+Which you now can explore and expand the graph visualization. 
+
+This is a great way to discover interesting relationships and formulate questions about your data. 
+
+///TODO captions!!
 
 One neat feature is to select two nodes (`Shift-Click`) and select *Paths -> Shortest Path* from the right-click context menu on one of them.
 
-TBD educate about paths in search box!
+// TBD educate about paths in search box!
 
 You can select all `Categories` by clicking on their box in the right side legend and then choose *Expand -> All* in the context menu to see all the products contained in these categories.
 
@@ -140,7 +159,7 @@ There you can explore your data structurally.
 
 Learn more in the https://neo4j.com/docs/bloom-user-guide/current/bloom-visual-tour/[documentation^] and videos.
 
-TODO switch to Query
+// TODO switch to Query
 
 == Basic Querying
 
