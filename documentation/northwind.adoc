@@ -52,7 +52,7 @@ The nodes and relationships in your graph can have _types_ and _properties_.
 === Nodes and properties
 
 Nodes can be tagged with _labels_, representing their different roles in your dataset (e.g. `Supplier`, `Employee`, `Customer`).
-They can also hold any number of key-value pairs as _properties_ (e.g. `name:"Jane"`).
+They can also hold any number of key-value pairs as _properties_ (e.g. `name:"Camembert Pierrot"`).
 
 === Relationships
 
