@@ -68,12 +68,12 @@ shipped.
 
 image::https://neo4j-graph-examples.github.io/northwind/documentation/img/product-category-supplier.png[]
 
-The classic Northwind dataset represents an online shop. You're going transform this relational database example into a graph database. 
+The classic Northwind dataset represents an online shop. We're going transform this relational database example into a graph database. 
 
 image::https://neo4j-graph-examples.github.io/northwind/documentation/img/product-graph.png[]
 
 ////
-.TODO diagram of Northwind customer, order, and product
+TODO: diagram of Northwind customer, order, and product
 image::https://github.com/neo4j-graph-examples/northwind/blob/main/documentation/img/example.svg[]
 ////
 
@@ -83,13 +83,14 @@ Click the button to download a zip file with the CSVs and an initial graph model
 TODO:  Button Download the Northwind dataset
 ////
 
-Drag the zip file into the left file sidebar of the import tab on the left.
+If the Import tab, drag the zip file into the the import sidebar on the left.
 
-You can now see the CSV files from Northwind's tables represented as a graph model. 
+You can now see the CSV files from Northwind's tables represented as a graph model. We have prepared the mappings for these files for you. 
 
 Notice the relationships connecting the nodes: a `Customer PURCHASED an Order` and the `Order CONTAINED Products`.
 
 image::https://neo4j-graph-examples.github.io/northwind/documentation/img/model.svg[]
+
 
 == Finish the Northwind import
 
@@ -117,25 +118,24 @@ It's time see the power of graph visualization.
 
 // TODO button switch to explore
 
+
 == Explore your graphs
 
 Now that your data is in the graph, let's get familiar with in the *Explore* tab.
 
 The `Show me a graph` search phrase should have been run automatically to show an example subset of the data.
 
-You can also run it yourself in the top-left search bar.
+You can also run it yourself by typing the phrase in the top-left search bar.
 
 === Searching for data in Explore
 
 You can use simple search phrases based on your node labels and relationship types to visualize your graph.
 
-Try to enter `Category<tab>` and then press return; it should fetch and display all categories. 
-
-Which you now can explore and expand the graph visualization. 
+Try to enter `Category<tab>` and then press return; it should fetch and display all categories. You can now explore and expand the graph visualization. 
 
 This is a great way to discover interesting relationships and formulate questions about your data. 
 
-///TODO captions!!
+// TODO captions!!
 
 One neat feature is to select two nodes (`Shift-Click`) and select *Paths -> Shortest Path* from the right-click context menu on one of them.
 
@@ -143,19 +143,20 @@ One neat feature is to select two nodes (`Shift-Click`) and select *Paths -> Sho
 
 You can select all `Categories` by clicking on their box in the right side legend and then choose *Expand -> All* in the context menu to see all the products contained in these categories.
 
-That context menu also offers many more options like editing, partial expansion, clearing the scene or dismissing (un-)selected. nodes.
+That context menu also offers many more options like editing, partial expansion, clearing the scene, or dismissing (un-)selected. nodes.
 
 == Advanced exploration
 
 Above the zoomed out view, you can switch between layouts.
 
 You can style your data in the right legend using colors, icons, sizes, captions and even apply rules for these.
-Try to click on `Category` in the Legend and pick a different color, icon and size for your nodes.
+
+- Click on `Category` in the Legend and pick a different color, icon, and size for your nodes.
 
 Selected nodes and relationships are highlighted and counted in the legend and shown in the card view in the lower left corner. 
 There you can explore your data structurally.
 
-*Explore* also offers options to filter your on-screen nodes with a advanced filter menu, and even rudimentary end user programming by storing *Cypher Phrases* to be available later.
+*Explore* also offers options to filter your on-screen nodes with a advanced filter menu, and even rudimentary user programming by storing *Cypher Phrases* to re-use later.
 
 Learn more in the https://neo4j.com/docs/bloom-user-guide/current/bloom-visual-tour/[documentation^] and videos.
 
@@ -163,8 +164,9 @@ Learn more in the https://neo4j.com/docs/bloom-user-guide/current/bloom-visual-t
 
 == Basic Querying
 
-On the left sidebar in the first entry (database) you can see the counts of types of nodes and relationships.
-Click on `(Product)` - the database will fetch a few  elements with that label with a minimal query.
+If you haven't already, switch to the Query tab. 
+
+On the left sidebar in the first entry (database) you can see the counts of types of nodes and relationships. Click on `(Product)` - the database will fetch a few  elements with that label with a minimal query.
 
 .Load query for product nodes
 [source,cypher]
@@ -175,9 +177,11 @@ LIMIT 25
 ----
 
 In the *graph view* the result nodes are visualized and you can double-click them to see their neighbors. 
+
 In the right properties side-panel you can inspect more properties and also style the nodes (size, color, caption) if you click on the `(Product)` label on top.
 
 You can also switch to the *table view* to see your results in a tabular fashion, nodes and relationships are visualized in a JSON structure.
+
 That view shows by default if you return only scalar values.
 
 // TBD Alternatively we could have them click on [:SUPPLIES] and then they would already see a graph visualization, it would use graph patterns and pattern variable, but it might be too complex. I would actually prefer this one.
@@ -186,20 +190,22 @@ That view shows by default if you return only scalar values.
 == Writing your first query
 
 Like any other database Neo4j can be queried with a query language. 
-As SQL joins get really convoluted for graphs, our graph query language called *Cypher* is much better suited for finding patterns.
+
+Our graph query language called *Cypher* and is much better suited for finding patterns. Compared to SQL there is no reliance on writing complex joins. 
 
 In Cypher you represent the graph patterns that you've seen in Import and Explore with ascii-art. 
 
 Parentheses `(p:Product {name:'Camembert Pierrot'})` forming "circles" around nodes and arrows `+-[:SUPPLIES]->+` depicting relationships. 
+
 You draw in text what you would draw on the whiteboard.
 
-These patterns are used to find, create and update graph data.
+These patterns are used to find, create, and update graph data.
 
 You've already seen the `MATCH (n:Product) RETURN n LIMIT 25` statement that was run for you.
 
 Click on the statement to edit it and change the pattern to: `(n:Product)<-[r:SUPPLIES]-(s:Supplier)` and the result to `RETURN n,r,s LIMIT 25` and click on the run icon icon:PlayIcon[].
 
-Congratulations, you've written and run your first Cypher query.
+Congratulations, you've written and run your first Cypher query!
 
 .Show products and their suppliers
 [source,cypher]
@@ -211,7 +217,9 @@ LIMIT 25
 
 To learn more about Cypher check out the interactive https://graphacademy.neo4j.com/categories/beginners/[GraphAcademy course^] and have a look at the https://neo4j.com/docs/cypher-cheat-sheet/current/[Cypher Cheat Sheet^].
 
-A more complex query would find all products ordered by a customer and who supplies those.
+== A more advanced query 
+
+A more complex query would find all products ordered by a customer and who supplies them.
 
 .All products ordered by a customer and who supplies those
 [source,cypher]
@@ -233,4 +241,20 @@ MATCH (cust:Customer)-[:PURCHASED]->(:Order)-[o:ORDERS]->(p:Product),
 RETURN DISTINCT cust.contactName as CustomerName, SUM(o.quantity) AS TotalProductsPurchased
 ----
 
+== Next steps
+
+=== Creating applications
+
 As you get more familiar with Cypher, you can use the https://neo4j.com/docs/drivers-apis/[Neo4j drivers^] for JavaScript, Python, Java, C# and Go to build your applications, or use our GraphQL or Spring Data Neo4j integrations for building APIs.
+
+=== Mastering data importer
+
+// TODO: expand this  
+
+=== Mastering Cypher 
+
+// TODO: expand this  
+
+=== Introducing Graph Data Science
+
+// TODO: expand this  
