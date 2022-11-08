@@ -40,7 +40,7 @@ In a graph, where the relationships are stored, many powerful operations are fas
 
 In a relational database, you must define your schema (the structure of the data). 
 In a graph, your data is managed without restricting it to a predefined schema. 
-This allows more flexibility in thinking about the data and in evolving it.0
+This allows more flexibility in thinking about the data and in evolving it.
 
 == Nodes, properties, relationships
 
@@ -61,8 +61,7 @@ They can also have properties, just like nodes.
 Nodes can have any number of relationships without sacrificing performance. 
 
 Although relationships are always directed, they can be navigated efficiently in any direction.
-In this example, you can find who shipped an order and you can also reverse that and find what orders were
-shipped.
+In this example, you can find who shipped an order and you can also reverse that and find what orders were shipped.
 
 
 == Re-imagining a classic (Northwind)
@@ -263,7 +262,7 @@ Congratulations on completing this tutorial.
 
 You can do more with the Northwind dataset or you can reset your instance in AuraDB Console and import your own data.
 
-For you next steps, a suggestion is to look at furthering your Cypher knowledge or building an application using Neo4j's popular language drivers.
+For your next steps, a suggestion is to look at furthering your Cypher knowledge or building an application using Neo4j's popular language drivers.
 
 === Next steps with Cypher 
 
