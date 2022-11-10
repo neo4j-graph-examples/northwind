@@ -80,11 +80,12 @@ TODO: diagram of Northwind customer, order, and product
 image::https://github.com/neo4j-graph-examples/northwind/blob/main/documentation/img/example.svg[]
 ////
 
-Click the link below to download a zip file with the CSV files and an initial graph model prepared for you. Once saved to your computer you can use the data importer to upload it.
+We have prepared a zip of CSV files and an initial graph model from the Northwind dataset. 
+You can https://github.com/neo4j-graph-examples/northwind/blob/main/import/northwind-data-importer-mode-data.zip?raw=true[download this as a zip file] if you'd like to take a closer look.
 
-https://github.com/neo4j-graph-examples/northwind/blob/main/import/northwind-data-importer-mode-data.zip?raw=true[Download Northwind sample data zip file]
+Click the button below and we will automatically map the Northwind dataset for you.
 
-From the _Import_ tab, drag the zip file into the the import sidebar on the left.
+button::Load the Northwind dataset[role=NX_IMPORT_LOAD,endpoint=https://raw.githubusercontent.com/neo4j-graph-examples/northwind/main/import/northwind-data-importer-mode-data.zip]
 
 You can now see the CSV files from Northwind's tables represented as a graph model. 
 The mappings for these files are already prepared for you.
