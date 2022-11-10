@@ -1,0 +1,282 @@
+= Learn graph fundamentals with Neo4j
+
+
+== Get started
+
+This guide teaches you about the power of graph databases.
+It is the recommended starting place for all new users as it touches upon the concepts and tools you need to work with graphs.
+
+=== What you will learn
+
+This guide takes around 10 minutes and by the end of it you will able to:
+
+- Understand the _graph property model_ and what problems it can help you solve.
+- Convert an understanding of a relational database model to a graph.
+- Import and model data from CSV files and map them to a graph.
+- Visually explore that data, without code, in a graph. 
+- Write your first simple graph queries using _Cypher_.
+
+=== Get started! 
+
+You are going to use the classic relational dataset known as Northwind and bring the fictional company into a graph-enabled future.
+
+
+== What is a graph?
+
+=== Concepts
+
+A graph database stores _nodes_ (`Supplier`, `Product`, etc) and their _relationships_ (e.g. `Supplier SUPPLIES Product`). 
+
+Other types of databases may use tables and documents, but in a graph, data is stored in the same way as you may sketch ideas on a whiteboard. 
+
+image::https://github.com/neo4j-graph-examples/northwind/raw/main/documentation/img/model.svg[]
+
+In relational databases, you are often required to add explicit joins to your queries. 
+In doing this, relationships are calculated at runtime, which can be an expensive and slow operation.
+
+In a graph, where the relationships are stored, many powerful operations are faster and simpler.
+
+=== Schema-free
+
+In a relational database, you must define your schema (the structure of the data). 
+In a graph, your data is managed without restricting it to a predefined schema. 
+This allows more flexibility in thinking about the data and in evolving it.
+
+== Nodes, properties, relationships
+
+The nodes and relationships in your graph can have _types_ and _properties_. 
+
+=== Nodes and properties
+
+Nodes can be tagged with _labels_, representing their different roles in your dataset (e.g. `Supplier`, `Employee`, `Customer`).
+They can also have any number of key-value pairs as _properties_ (e.g. `name:"Camembert Pierrot"`).
+
+=== Relationships
+
+_Relationships_ provide directed, typed, or attributed, connections between two node entities (e.g. `Shipper SHIPS Order`).
+
+Relationships always have a _direction_, a _type_, a start node, and an end node. 
+They can also have properties, just like nodes.
+
+Nodes can have any number of relationships without sacrificing performance. 
+
+Although relationships are always directed, they can be navigated efficiently in any direction.
+In this example, you can find who shipped an order and you can also reverse that and find what orders were shipped.
+
+
+== Re-imagining a classic (Northwind)
+
+// await signals.emit(SIGNAL_NAME.WorkspaceNavigate, { scope: APP_SCOPE.import });
+
+image::https://neo4j-graph-examples.github.io/northwind/documentation/img/product-category-supplier.png[]
+
+The classic Northwind dataset represents an online shop. 
+You are now going to transform this relational database into a graph database.
+
+image::https://neo4j-graph-examples.github.io/northwind/documentation/img/product-graph.png[]
+
+////
+TODO: diagram of Northwind customer, order, and product
+image::https://github.com/neo4j-graph-examples/northwind/blob/main/documentation/img/example.svg[]
+////
+
+Click the link below to download a zip file with the CSV files and an initial graph model prepared for you. Once saved to your computer you can use the data importer to upload it.
+
+https://github.com/neo4j-graph-examples/northwind/blob/main/import/northwind-data-importer-mode-data.zip?raw=true[Download Northwind sample data zip file]
+
+From the _Import_ tab, drag the zip file into the the import sidebar on the left.
+
+You can now see the CSV files from Northwind's tables represented as a graph model. 
+The mappings for these files are already prepared for you.
+
+Notice the relationships connecting the nodes, e.g. a `Customer PURCHASED an Order` and the `Order CONTAINED Products`.
+
+image::https://neo4j-graph-examples.github.io/northwind/documentation/img/model.svg[]
+
+
+== Finish the Northwind import
+
+For each node and relationship in the model you can see which parts of the CSV file are mapped to which properties.
+
+Source and target IDs from the original join tables or foreign keys are used to create relationships to connect nodes.
+
+The model is interactive; you can click around and explore its nodes and relationships. 
+
+=== Preview your data import
+
+You can see a preview of the data import by clicking the _Preview Graph_ button.
+This allows you to check node labels, the property names and values, and the relationship types and directions.
+
+If you're satisfied, click the _Run Import_ button to load your data into your graph.
+
+If something goes wrong, keep in mind that the tool can import the same data multiple times and you can reset your database to blank in the AuraDB Console.
+
+// A/B Test: TBD we could leave off one simple mapping, e.g. shipper and let the user do it (or prepare the node without mapping the rel and properties (but pick one that lends itself well to auto-mapping) in an area of the model that is non-crucial for later steps but not sure if that would have too many folks fail here
+
+=== Explore your data
+
+After you have imported the Northwind dataset, click the _Explore the Import Results_ button in the report popup or switch to the _Explore_ tab. 
+
+Next you are going to see the power of graph visualization.
+
+// TODO button switch to explore
+
+
+== Explore your graph
+
+With the data in a graph, it is time to get familiar with the _Explore_ tab.
+
+The `Show me a graph` Search Phrase runs automatically to show an example subset of the data.
+The visualized graph represents the relationships in the data in an intuitive way.
+
+[NOTE]
+====
+You can also run the _Show me a graph_ example Search Phrase yourself by typing the _Show me a graph_ in the top-left search bar.
+====
+
+=== Searching for data in Explore
+
+You can use simple search phrases based on your node labels and relationship types to visualize your graph.
+
+If you enter `Category<tab>` and then press return; it fetches and displays all categories. 
+You can now explore and expand the graph visualization. 
+
+This is a great way to discover interesting relationships and formulate questions about your data. 
+
+// TODO captions!!
+
+Another useful feature is to select two nodes (`Shift-Click`) and select _Paths -> Shortest Path_ from the right-click context menu on one of them.
+
+// TBD educate about paths in search box!
+
+You can select all `Categories` by clicking on their box in the right side legend and then choose _Expand -> All_ in the context menu to see all the products contained in these categories.
+
+The context menu also offers many more options like editing, partial expansion, clearing the scene, or dismissing (un-)selected nodes.
+
+== Advanced exploration
+
+In the bottom-right of _Explore_ you can switch between the default force-based layout and a hierarchical layout.
+
+You can style your data in the right legend using colors, icons, sizes, and captions, and even apply rules for these.
+
+// TODO: a screenshot here might be good to inspire or show what's possible.
+
+Click on `Category` in the legend panel and pick a different color, icon, and/or size for your nodes.
+
+Selected nodes and relationships are highlighted and counted in the legend panel and shown in the card view in the lower left corner. 
+There you can explore your data structurally.
+
+Explore also offers options to filter your on-screen nodes with a advanced filter menu, and even rudimentary user programming by storing Cypher phrases to reuse later.
+
+Learn more in the link:https://neo4j.com/docs/bloom-user-guide/current/bloom-visual-tour/[documentation^] and videos.
+
+// TODO switch to Query
+
+== Basic Querying
+
+Switch to the _Query_ tab, if you haven't already done so. 
+
+On the left sidebar in the first entry (database) you can see the counts of types of nodes and relationships. 
+Click on `(Product)` - the database fetches a few elements with the `Product`-label using a minimal query.
+
+.Load query for product nodes
+[source,cypher]
+----
+MATCH (n:Product) 
+RETURN n 
+LIMIT 25
+----
+
+The result nodes are visualized in the _graph view_, and you can double-click nodes to see their neighbors. 
+
+In the right properties side-panel you can inspect more properties. 
+You can also style nodes (size, color, caption) by clicking on the `(Product)` label on top.
+
+Results can also be shown in a tabular view by clicking the _table view_ option.
+Nodes and relationships are visualized in a JSON structure.
+That view is shown by default if you return only scalar values.
+
+// TBD Alternatively we could have them click on [:SUPPLIES] and then they would already see a graph visualization, it would use graph patterns and pattern variable, but it might be too complex. I would actually prefer this one.
+// See screenhots below.
+
+== Writing your first query
+
+Like any other database, Neo4j can be queried with a query language. 
+
+Neo4j's graph query language is called _Cypher_ and is very well-suited for finding patterns. 
+Unlike SQL, there is no reliance on writing complex joins. 
+
+In Cypher, you represent the graph patterns that you've seen in Import and Explore with ascii-art. 
+
+Parentheses `(p:Product {name:'Camembert Pierrot'})` form "circles" around nodes and arrows `+-[:SUPPLIES]->+` depicts relationships. 
+
+You draw in text what you would draw on the whiteboard.
+
+These patterns are used to find, create, and update graph data.
+
+You've already seen the `MATCH (n:Product) RETURN n LIMIT 25` statement that was run previously.
+
+Now click on the statement to edit it and change the pattern and result to: 
+
+[source,cypher]
+----
+MATCH (n:Product)<-[r:SUPPLIES]-(s:Supplier)
+RETURN n,r,s 
+LIMIT 25
+----
+
+then click on the run icon icon:PlayIcon[].
+
+Congratulations, you've written and run your first Cypher query!
+
+
+== A more advanced query 
+
+For the last part of this guide you get the opportunity to try some more powerful queries. 
+
+First, this query finds all products ordered by a customer and who supplies them.
+
+.All products ordered by a customer and who supplies those
+[source,cypher]
+----
+MATCH path=(c:Customer)-[:PURCHASED]->()-[:ORDERS]->(:Product)<-[:SUPPLIES]-(:Supplier)
+WHERE c.companyName = 'Blauer See Delikatessen'
+RETURN path;
+----
+
+image::https://neo4j-graph-examples.github.io/northwind/documentation/img/example.svg[]
+
+You can also see how many products in the `Produce` category each customer ordered.
+
+.Find total quantity per customer in the "Produce" category
+[source,cypher]
+----
+MATCH (cust:Customer)-[:PURCHASED]->(:Order)-[o:ORDERS]->(p:Product),
+      (p)-[:PART_OF]->(c:Category {categoryName:"Produce"})
+RETURN DISTINCT cust.contactName as CustomerName, SUM(o.quantity) AS TotalProductsPurchased
+----
+
+== Next steps
+
+Congratulations on completing this tutorial.
+
+You can do more with the Northwind dataset or you can reset your instance in AuraDB Console and import your own data.
+
+For your next steps, a suggestion is to look at furthering your Cypher knowledge or building an application using Neo4j's popular language drivers.
+
+=== Next steps with Cypher 
+
+To learn more about Cypher, check out the interactive https://graphacademy.neo4j.com/categories/beginners/[GraphAcademy course^] and have a look at the https://neo4j.com/docs/cypher-cheat-sheet/current/[Cypher Cheat Sheet^].
+
+=== Creating applications
+
+As you get more familiar with Cypher, you can use the https://neo4j.com/docs/drivers-apis/[Neo4j drivers^] for C#, Go, Java, JavaScript, and Python to build your applications, or use our GraphQL or Spring Data Neo4j integrations for building APIs.
+
+=== Go further with GraphAcademy
+
+GraphAcademy is provided by Neo4j and offers in-depth courses on many aspects of graph databases. 
+Check out the https://graphacademy.neo4j.com/[GraphAcademy website^].
+
+//=== Mastering data importer
+
+// TODO: expand this  
