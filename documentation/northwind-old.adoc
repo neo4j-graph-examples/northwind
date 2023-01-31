@@ -1,8 +1,6 @@
 = Northwind Graph
 :neo4j-version: 2.3.0
 
-:toc:
-
 == From RDBMS to Graph, using a classic dataset
 
 The__Northwind Graph__ demonstrates how to migrate from a relational
@@ -30,7 +28,17 @@ name `row`).
 
 image:https://dev.assets.neo4j.com/wp-content/uploads/20160211151109/product-category-supplier.png[image]
 
-== Load records
+=== Create Constraints
+
+.Create constraints for the nodes
+[source,cypher]
+----
+CREATE CONSTRAINT product_productID IF NOT EXISTS FOR (p:Product) REQUIRE (p.productID) IS UNIQUE;
+CREATE CONSTRAINT category_categoryID IF NOT EXISTS FOR (c:Category) REQUIRE (c.categoryID) IS UNIQUE;
+CREATE CONSTRAINT supplier_supplierID IF NOT EXISTS FOR (s:Supplier) REQUIRE (s.supplierID) IS UNIQUE;
+----
+
+=== Load records
 
 .Load products
 [source,cypher]
@@ -39,8 +47,8 @@ LOAD CSV WITH HEADERS FROM "https://data.neo4j.com/northwind/products.csv" AS ro
 CREATE (n:Product)
 SET n = row,
   n.unitPrice = toFloat(row.unitPrice),
-  n.unitsInStock = toInt(row.unitsInStock), n.unitsOnOrder = toInt(row.unitsOnOrder),
-  n.reorderLevel = toInt(row.reorderLevel), n.discontinued = (row.discontinued <> "0")
+  n.unitsInStock = toInteger(row.unitsInStock), n.unitsOnOrder = toInteger(row.unitsOnOrder),
+  n.reorderLevel = toInteger(row.reorderLevel), n.discontinued = (row.discontinued <> "0")
 ----
 
 .Load categories
@@ -57,16 +65,6 @@ SET n = row
 LOAD CSV WITH HEADERS FROM "https://data.neo4j.com/northwind/suppliers.csv" AS row
 CREATE (n:Supplier)
 SET n = row
-----
-
-== Create indexes
-
-.Create indexes for the loaded nodes
-[source,cypher]
-----
-CREATE INDEX ON :Product(productID);
-CREATE INDEX ON :Category(categoryID);
-CREATE INDEX ON :Supplier(supplierID);
 ----
 
 == Product Catalog Graph
@@ -141,6 +139,13 @@ image::https://dev.assets.neo4j.com/wp-content/uploads/20160211151108/customer-o
 
 === Load and index records
 
+.Create constraints for nodes
+[source,cypher]
+----
+CREATE CONSTRAINT customer_customerID IF NOT EXISTS FOR (c:Customer) REQUIRE (c.customerID) IS UNIQUE;
+CREATE CONSTRAINT order_orderID IF NOT EXISTS FOR (o:Order) REQUIRE (o.orderID) IS UNIQUE;
+----
+
 .Load customers
 [source,cypher]
 ----
@@ -155,13 +160,6 @@ SET n = row
 LOAD CSV WITH HEADERS FROM "https://data.neo4j.com/northwind/orders.csv" AS row
 CREATE (n:Order)
 SET n = row
-----
-
-.Create indexes for loaded nodes
-[source,cypher]
-----
-CREATE INDEX ON :Customer(customerID);
-CREATE INDEX ON :Order(orderID);
 ----
 
 == Create data relationships
@@ -198,7 +196,7 @@ MATCH (p:Product), (o:Order)
 WHERE p.productID = row.productID AND o.orderID = row.orderID
 CREATE (o)-[details:ORDERS]->(p)
 SET details = row,
-  details.quantity = toInt(row.quantity)
+  details.quantity = toInteger(row.quantity)
 ----
 
 Note you only need to compare property values like this when first

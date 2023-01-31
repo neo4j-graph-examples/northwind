@@ -1,213 +1,384 @@
-= Northwind Graph
-:img: img
+<style type="text/css" media="screen">
+/*
+.nodes-image {
+	margin:-100;
+}
+*/	
+@import url("//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css");
 
-== Northwind Graph
+.imageblock .content img, .image img {max-width: 100%;}
+.deck h3, .deck h4 {display: block !important;margin-bottom:8px;margin-top:5px;}
+.listingblock {margin:8px;}
+.pull-bottom {position:relative;bottom:1em;}
+.admonitionblock td.icon [class^="fa icon-"]{font-size:2.5em;text-shadow:1px 1px 2px rgba(0,0,0,.5);cursor:default}
+.admonitionblock td.icon .icon-note:before{content:"\f05a";color:#19407c}
+.admonitionblock td.icon .icon-tip:before{content:"\f0eb";text-shadow:1px 1px 2px rgba(155,155,0,.8);color:#111}
+.admonitionblock td.icon .icon-warning:before{content:"\f071";color:#bf6900}
+.admonitionblock td.icon .icon-caution:before{content:"\f06d";color:#bf3400}
+.admonitionblock td.icon .icon-important:before{content:"\f06a";color:#bf0000}
+.admonitionblock.note.speaker { display:none; }
+</style>
+<style type="text/css" media="screen">
+/* #editor.maximize-editor .CodeMirror-code { font-size:24px; line-height:26px; } */
+</style>
+<article class="guide" ng-controller="AdLibDataController">
+  <carousel class="deck container-fluid">
+    <!--slide class="row-fluid">
+      <div class="col-sm-3">
+        <h3>Northwind Graph</h3>
+        <p class="lead">Information</p>
+			<!dl>
+				
+				
+				
+				
+				
+			</dl>
+		</div>
+      <div class="col-sm-9">
+        <figure>
+          <img style="width:300px" src=""/>
+        </figure>
+      </div>
+    </slide-->
+    
 
-From RDBMS to Graph, using a classic dataset
 
-The _Northwind Graph_ demonstrates how to migrate from a relational database to Neo4j. The transformation is iterative and deliberate, emphasizing the conceptual shift from relational tables to the nodes and relationships of a graph.
+   <h4>Northwind Graph</h4>
+   
 
-This guide will show you how to:
 
-* Load: create data from external CSV files
-* Index: index nodes based on label
-* Relate: transform foreign key references into data relationships
-* Promote: transform join records into relationships
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>From RDBMS to Graph, using a classic dataset</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>The<em>Northwind Graph</em> demonstrates how to migrate from a relational
+database to Neo4j. The transformation is iterative and deliberate,
+emphasizing the conceptual shift from relational tables to the nodes and
+relationships of a graph.</p>
+</div>
+<div class="paragraph">
+<p>This guide will show you how to:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Load: create data from external CSV files</p>
+</li>
+<li>
+<p>Index: index nodes based on label</p>
+</li>
+<li>
+<p>Relate: transform foreign key references into data relationships</p>
+</li>
+<li>
+<p>Promote: transform join records into relationships</p>
+</li>
+</ol>
+</div>
+	</div>
+  </div>
+</slide>
 
----
 
-== Product Catalog
 
-[.float-group]
---
-[.left]
-image::{img}/product-category-supplier.png[]
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Product Catalog</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>Northwind sells food products in a few categories, provided by
+suppliers. Let&#8217;s start by loading the product catalog tables.</p>
+</div>
+<div class="paragraph">
+<p>The load statements to the right require public internet
+access.<code>LOAD CSV</code> will retrieve a CSV file from a valid URL, applying a
+Cypher statement to each row using a named map (here we&#8217;re using the
+name <code>row</code>).</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="https://dev.assets.neo4j.com/wp-content/uploads/20160211151109/product-category-supplier.png" alt="image"></span></p>
+</div>
 
-Northwind sells food products in a few categories, provided by suppliers. Let's start by loading the product catalog tables.
 
-The load statements to the right require public internet access. `LOAD CSV` will retrieve a CSV file from a valid URL, applying a Cypher statement to each row using a named map (here we're using the name `row`).
 
-pass:[help <a help-topic="cypher">cypher</a> <a help-topic="load-csv">LOAD CSV</a>]
---
+   <h4>Create Constraints</h4>
+   <div class="listingblock">
+<div class="title">Create constraints for the nodes</div>
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable programlisting cm-s-neo code runnable standalone-example ng-binding" data-lang="cypher" lang="cypher"><!--code class="cypher language-cypher"-->CREATE CONSTRAINT product_productID IF NOT EXISTS FOR (p:Product) REQUIRE (p.productID) IS UNIQUE;
+CREATE CONSTRAINT category_categoryID IF NOT EXISTS FOR (c:Category) REQUIRE (c.categoryID) IS UNIQUE;
+CREATE CONSTRAINT supplier_supplierID IF NOT EXISTS FOR (s:Supplier) REQUIRE (s.supplierID) IS UNIQUE;<!--/code--></pre>
+</div>
+</div>
 
-=== Load records
 
-[source,cypher]
-----
-LOAD CSV WITH HEADERS FROM "http://data.neo4j.com/northwind/products.csv" AS row
+
+   <h4>Load records</h4>
+   <div class="listingblock">
+<div class="title">Load products</div>
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable programlisting cm-s-neo code runnable standalone-example ng-binding" data-lang="cypher" lang="cypher"><!--code class="cypher language-cypher"-->LOAD CSV WITH HEADERS FROM "https://data.neo4j.com/northwind/products.csv" AS row
 CREATE (n:Product)
 SET n = row,
-n.unitPrice = toFloat(row.unitPrice),
-n.unitsInStock = toInteger(row.unitsInStock), n.unitsOnOrder = toInteger(row.unitsOnOrder),
-n.reorderLevel = toInteger(row.reorderLevel), n.discontinued = (row.discontinued <> "0");
-----
-
-[source,cypher]
-----
-LOAD CSV WITH HEADERS FROM "http://data.neo4j.com/northwind/categories.csv" AS row
+  n.unitPrice = toFloat(row.unitPrice),
+  n.unitsInStock = toInteger(row.unitsInStock), n.unitsOnOrder = toInteger(row.unitsOnOrder),
+  n.reorderLevel = toInteger(row.reorderLevel), n.discontinued = (row.discontinued &lt;&gt; "0")<!--/code--></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Load categories</div>
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable programlisting cm-s-neo code runnable standalone-example ng-binding" data-lang="cypher" lang="cypher"><!--code class="cypher language-cypher"-->LOAD CSV WITH HEADERS FROM "https://data.neo4j.com/northwind/categories.csv" AS row
 CREATE (n:Category)
-SET n = row;
-----
+SET n = row<!--/code--></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Load suppliers</div>
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable programlisting cm-s-neo code runnable standalone-example ng-binding" data-lang="cypher" lang="cypher"><!--code class="cypher language-cypher"-->LOAD CSV WITH HEADERS FROM "https://data.neo4j.com/northwind/suppliers.csv" AS row
+CREATE (n:Supplier)
+SET n = row<!--/code--></pre>
+</div>
+</div>
+	</div>
+  </div>
+</slide>
 
-[source,cypher]
-----
- LOAD CSV WITH HEADERS FROM "http://data.neo4j.com/northwind/suppliers.csv" AS row
- CREATE (n:Supplier)
- SET n = row;
-----
 
-[source,cypher]
-----
-CREATE INDEX ON :Product(productID);
-CREATE INDEX ON :Category(categoryID);
-CREATE INDEX ON :Supplier(supplierID);
-----
 
----
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Product Catalog Graph</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>The products, categories and suppliers are related through foreign key
+references. Let&#8217;s promote those to data relationships to realize the
+graph.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="https://dev.assets.neo4j.com/wp-content/uploads/20160211151108/product-graph.png" alt="image"></span></p>
+</div>
 
-== Product Catalog Graph
 
-[.left]
-image::{img}/product-graph.png[]
 
-The products, categories and suppliers are related through foreign key references. Let's promote those to data relationships to realize the graph.
-
-pass:[help <a help-topic="cypher">cypher</a> <a help-topic="match">MATCH</a>]
-
-=== Create data relationships
-
-Calculate join, materialize relationship.
-See the http://neo4j.com/developer/guide-importing-data-and-etl[importing guide^] for more details. 
-
-WARNING: Note you only need to compare property values like this when first creating relationships
-
-[source,cypher]
-----
-MATCH (p:Product),(c:Category)
+   <h4>Create data relationships</h4>
+   <div class="listingblock">
+<div class="title">Connect products to categories</div>
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable programlisting cm-s-neo code runnable standalone-example ng-binding" data-lang="cypher" lang="cypher"><!--code class="cypher language-cypher"-->MATCH (p:Product),(c:Category)
 WHERE p.categoryID = c.categoryID
-CREATE (p)-[:PART_OF]->(c);
-----
-
-[source,cypher]
-----
-MATCH (p:Product),(s:Supplier)
+CREATE (p)-[:PART_OF]-&gt;(c)<!--/code--></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note you only need to compare property values like this when first
+creating relationships</p>
+</div>
+<div class="paragraph">
+<p>Calculate join, materialize relationship.
+(See <a href="https://neo4j.com/developer/guide-importing-data-and-etl">importing guide</a> for more details)</p>
+</div>
+<div class="listingblock">
+<div class="title">Connect products to suppliers</div>
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable programlisting cm-s-neo code runnable standalone-example ng-binding" data-lang="cypher" lang="cypher"><!--code class="cypher language-cypher"-->MATCH (p:Product),(s:Supplier)
 WHERE p.supplierID = s.supplierID
-CREATE (s)-[:SUPPLIES]->(p);
-----
+CREATE (s)-[:SUPPLIES]-&gt;(p)<!--/code--></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note you only need to compare property values like this when first
+creating relationships</p>
+</div>
+	</div>
+  </div>
+</slide>
 
-== Querying Product Catalog Graph
 
-[.left]
-image::{img}/product-graph.png[]
-Let's try some queries using patterns.
 
-pass:[help <a help-topic="cypher">cypher</a> <a help-topic="match">MATCH</a>]
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Querying Product Catalog Graph</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>Lets try some queries using patterns.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="https://dev.assets.neo4j.com/wp-content/uploads/20160211151108/product-graph.png" alt="image"></span></p>
+</div>
 
-=== Query using patterns
 
-List the product categories provided by each supplier:
 
-[source,cypher]
-----
-MATCH (s:Supplier)-->(:Product)-->(c:Category)
-RETURN s.companyName as Company, collect(distinct c.categoryName) as Categories;
-----
+   <h4>Query using patterns</h4>
+   <div class="listingblock">
+<div class="title">List the product categories provided by each supplier</div>
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable programlisting cm-s-neo code runnable standalone-example ng-binding" data-lang="cypher" lang="cypher"><!--code class="cypher language-cypher"-->MATCH (s:Supplier)--&gt;(:Product)--&gt;(c:Category)
+RETURN s.companyName as Company, collect(distinct c.categoryName) as Categories<!--/code--></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">List suppliers for the "Produce" category</div>
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable programlisting cm-s-neo code runnable standalone-example ng-binding" data-lang="cypher" lang="cypher"><!--code class="cypher language-cypher"-->MATCH (c:Category {categoryName:"Produce"})&lt;--(:Product)&lt;--(s:Supplier)
+RETURN DISTINCT s.companyName as ProduceSuppliers<!--/code--></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Find the produce suppliers.</p>
+</div>
+	</div>
+  </div>
+</slide>
 
-Find the produce suppliers:
 
-[source,cypher]
-----
-MATCH (c:Category {categoryName:"Produce"})<--(:Product)<--(s:Supplier)
-RETURN DISTINCT s.companyName as ProduceSuppliers;
-----
 
-== Customer Orders
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Customer Orders</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>Northwind customers place orders which may detail multiple
+products.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://dev.assets.neo4j.com/wp-content/uploads/20160211151108/customer-orders.png" alt="customer orders">
+</div>
+</div>
 
-[.left]
-image::{img}/customer-orders.png[]
 
-Northwind customers place orders which may detail multiple products.
 
-pass:[help <a help-topic="cypher">cypher</a> <a help-topic="load-csv">LOAD CSV</a>]
-
-=== Load and index records
-
-[source,cypher]
-----
-LOAD CSV WITH HEADERS FROM "http://data.neo4j.com/northwind/customers.csv" AS row
+   <h4>Load and index records</h4>
+   <div class="listingblock">
+<div class="title">Create constraints for nodes</div>
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable programlisting cm-s-neo code runnable standalone-example ng-binding" data-lang="cypher" lang="cypher"><!--code class="cypher language-cypher"-->CREATE CONSTRAINT customer_customerID IF NOT EXISTS FOR (c:Customer) REQUIRE (c.customerID) IS UNIQUE;
+CREATE CONSTRAINT order_orderID IF NOT EXISTS FOR (o:Order) REQUIRE (o.orderID) IS UNIQUE;<!--/code--></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Load customers</div>
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable programlisting cm-s-neo code runnable standalone-example ng-binding" data-lang="cypher" lang="cypher"><!--code class="cypher language-cypher"-->LOAD CSV WITH HEADERS FROM "https://data.neo4j.com/northwind/customers.csv" AS row
 CREATE (n:Customer)
-SET n = row;
-----
-
-[source,cypher]
-----
-LOAD CSV WITH HEADERS FROM "http://data.neo4j.com/northwind/orders.csv" AS row
+SET n = row<!--/code--></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Load orders</div>
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable programlisting cm-s-neo code runnable standalone-example ng-binding" data-lang="cypher" lang="cypher"><!--code class="cypher language-cypher"-->LOAD CSV WITH HEADERS FROM "https://data.neo4j.com/northwind/orders.csv" AS row
 CREATE (n:Order)
-SET n = row;
-----
+SET n = row<!--/code--></pre>
+</div>
+</div>
+	</div>
+  </div>
+</slide>
 
-[source,cypher]
-----
-CREATE INDEX ON :Customer(customerID);
-CREATE INDEX ON :Order(orderID);
-----
 
-=== Create data relationships
 
-WARNING: Note you only need to compare property values like this when first creating relationships
-
-[source,cypher]
-----
-MATCH (c:Customer),(o:Order)
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Create data relationships</h3>
+    <br/>
+    <div>
+      <div class="listingblock">
+<div class="title">Connect customers to their orders</div>
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable programlisting cm-s-neo code runnable standalone-example ng-binding" data-lang="cypher" lang="cypher"><!--code class="cypher language-cypher"-->MATCH (c:Customer),(o:Order)
 WHERE c.customerID = o.customerID
-CREATE (c)-[:PURCHASED]->(o);
-----
+CREATE (c)-[:PURCHASED]-&gt;(o)<!--/code--></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note you only need to compare property values like this when first
+creating relationships</p>
+</div>
+	</div>
+  </div>
+</slide>
 
-== Customer Order Graph
 
-[.float-group]
---
-[.left]
-image::{img}/order-graph.png[]
 
-Notice that Order Details are always part of an Order and that they{' '} _relate_ the Order to a Product — they're a join table. Join tables are always a sign of a data relationship, indicating shared information between two other records.
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Customer Order Graph</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>Notice that Order Details are always part of an Order and that
+they<em>relate</em> the Order to a Product — they&#8217;re a join table. Join
+tables are always a sign of a data relationship, indicating shared
+information between two other records.</p>
+</div>
+<div class="paragraph">
+<p>Here, we&#8217;ll directly promote each OrderDetail record into a relationship
+in the graph. <span class="image"><img src="https://dev.assets.neo4j.com/wp-content/uploads/20160211151107/order-graph.png" alt="order graph"></span></p>
+</div>
 
-Here, we'll directly promote each OrderDetail record into a relationship in the graph.
---
 
-pass:[help <a help-topic="cypher">cypher</a> <a help-topic="load-csv">LOAD CSV</a>]
 
-=== Load and index records
-
-[source,cypher]
-----
-LOAD CSV WITH HEADERS FROM "http://data.neo4j.com/northwind/order-details.csv" AS row
+   <h4>Load and index records</h4>
+   <div class="listingblock">
+<div class="title">Load order details and use them to connect orders to products</div>
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable programlisting cm-s-neo code runnable standalone-example ng-binding" data-lang="cypher" lang="cypher"><!--code class="cypher language-cypher"-->LOAD CSV WITH HEADERS FROM "https://data.neo4j.com/northwind/order-details.csv" AS row
 MATCH (p:Product), (o:Order)
 WHERE p.productID = row.productID AND o.orderID = row.orderID
-CREATE (o)-[details:ORDERS]->(p)
-SET details = row, details.quantity = toInteger(row.quantity);
-----
+CREATE (o)-[details:ORDERS]-&gt;(p)
+SET details = row,
+  details.quantity = toInteger(row.quantity)<!--/code--></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note you only need to compare property values like this when first
+creating relationships</p>
+</div>
+	</div>
+  </div>
+</slide>
 
-WARNING: Note you only need to compare property values like this when first creating relationships
 
-=== Query using patterns
 
-[source,cypher]
-----
-MATCH (cust:Customer)-[:PURCHASED]->(:Order)-[o:ORDERS]->(p:Product),
-      (p)-[:PART_OF]->(c:Category {categoryName:"Produce"})
-RETURN DISTINCT cust.contactName as CustomerName, SUM(o.quantity) AS TotalProductsPurchased;
-----
-
-== Next steps
-
-=== More code
-
-* pass:a[<a play-topic="movie-graph">Movie Graph</a> - actors & movies]
-* pass:a[<a play-topic="cypher">Cypher</a> - query language fundamentals]
-
-=== References
-
-* https://neo4j.com/developer/guide-importing-data-and-etl/[Full Northwind import example^]
-* https://neo4j.com/developer/[Developer resources^]
-* https://neo4j.com/docs/cypher-manual[Neo4j Cypher Manual^]
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Query using patterns</h3>
+    <br/>
+    <div>
+      <div class="listingblock">
+<div class="title">Find total quantity per customer in the "Produce" category</div>
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable programlisting cm-s-neo code runnable standalone-example ng-binding" data-lang="cypher" lang="cypher"><!--code class="cypher language-cypher"-->MATCH (cust:Customer)-[:PURCHASED]-&gt;(:Order)-[o:ORDERS]-&gt;(p:Product),
+      (p)-[:PART_OF]-&gt;(c:Category {categoryName:"Produce"})
+RETURN DISTINCT cust.contactName as CustomerName, SUM(o.quantity) AS TotalProductsPurchased<!--/code--></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><em>More Resources</em></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://neo4j.com/developer/guide-importing-data-and-etl/">Full
+Northwind import example</a></p>
+</li>
+<li>
+<p><a href="https://neo4j.com/developer">Developer resources</a></p>
+</li>
+</ul>
+</div>
+	</div>
+  </div>
+</slide>
+  </carousel>
+</article>
