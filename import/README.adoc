@@ -1,0 +1,15 @@
+= Aura Import / Data Importer models
+
+Here you will find data and models for Aura Import / Neo4j Data Importer.
+
+There are multiple data importer models available in various states, from an empty model to a complete one. You can use these models as a starting point for your own data import projects, or as examples of how to structure your data and models for import.
+
+Files:
+
+* `*.csv` - CSV files with data for import.
+* `northwind-data-importer-mode-data.zip` - the data importer model for the Northwind dataset.
+* `northwind-empty.zip` - all the data with an empty model.
+* `northwind-customer.zip` - data + customer node
+* `northwind-customer-order.zip` - data + customer and order nodes with associated relationships
+* `northwind-customer-order-product.zip` - data + customer, order and product nodes and relationships
+* `northwind-complete.zip` - data + complete model with all nodes and relationships
